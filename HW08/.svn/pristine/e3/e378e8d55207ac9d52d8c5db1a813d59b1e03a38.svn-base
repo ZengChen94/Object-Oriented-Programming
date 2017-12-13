@@ -1,7 +1,0 @@
-package model;
-
-public interface IModel2ViewAdapter {
-
-	Object appendInfo(String string);
-
-}

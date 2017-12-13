@@ -1,7 +1,0 @@
-package model;
-
-import model.strategy.IUpdateStrategy;
-
-public interface IStrategyFac {
-	public IUpdateStrategy make();
-}

@@ -1,7 +1,0 @@
-package model;
-
-import java.rmi.Remote;
-
-public interface IChatRoom extends Remote {
-
-}
