@@ -1,0 +1,20 @@
+package view;
+
+import java.awt.Graphics;
+
+public interface IView2ModelPaintAdapter {
+	/**
+	 * This method paint balls.
+	 * @param g Graphics.
+	 */
+	public void paintBalls(Graphics g);
+
+	/**
+	 * No-op singleton implementation of IView2ModelPaintAdapter 
+	 */
+	public static final IView2ModelPaintAdapter NULL_OBJECT = new IView2ModelPaintAdapter() {
+		public void paintBalls(Graphics g) {
+
+		}
+	};
+}

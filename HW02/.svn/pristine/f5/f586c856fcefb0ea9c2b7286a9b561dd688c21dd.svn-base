@@ -1,0 +1,46 @@
+package model;
+
+import java.awt.Graphics;
+
+import javax.swing.Timer;
+
+import balls.ASprite;
+import util.Dispatcher;
+
+public class BallModel {
+	private IModel2ViewAdapter _model2ViewAdpt = IModel2ViewAdapter.NULL_OBJECT; // Insures that the adapter is always valid
+	private Dispatcher myDispatcher = new Dispatcher();
+	
+	private int _timeSlice = 50;  // update every 500 milliseconds
+	private Timer _timer = new Timer(_timeSlice,  (e) -> _model2ViewAdpt.update());
+	
+	public BallModel(IModel2ViewAdapter model2ViewAdpt ) {
+		_model2ViewAdpt  = model2ViewAdpt;
+	}
+	
+	public void add(ASprite sprite) {
+		myDispatcher.addObserver(sprite);
+	}
+	
+    /**
+	 * Clear all balls in this BallModel.
+	 */
+	public void clearAllBalls(){
+		myDispatcher.deleteObservers();
+	}
+	
+	// rest of Model code elided
+	/**
+     * This is the method that is called by the view's adapter to the model, i.e. is called by IView2ModelAdapter.paint().
+     * This method will update the sprites's painted locations by painting all the sprites
+     * onto the given Graphics object.
+     * @param g The Graphics object from the view's paintComponent() call.
+     */
+    public void update(Graphics g) {
+        myDispatcher.notifyAll(g);  // The Graphics object is being given to all the sprites (Observers)
+    }
+
+	public void start() {
+		_timer.start();
+	}
+}

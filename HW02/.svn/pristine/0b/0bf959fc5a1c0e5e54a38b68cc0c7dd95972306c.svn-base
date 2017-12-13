@@ -1,0 +1,36 @@
+package balls;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.util.Observable;
+import java.util.Observer;
+
+public class ASprite implements Observer{
+	private int x_position;
+
+	private int y_position;
+
+	private Color color;
+	
+	private int radius;
+	
+	public ASprite(int x_position, int y_position, int radius, Color color) {
+		this.x_position = x_position;
+		this.y_position = y_position;
+		this.radius = radius;
+		this.color = color;
+	}
+
+	public void paint(Graphics g) {
+//		super.paintComponent(g);   // paint whatever normally gets painted.
+	    g.setColor (color);  // set the color to paint with
+	    g.fillOval (x_position-radius, y_position-radius, 2*radius, 2*radius); // paint a circle onto the graphics object centered on location and with defined radius.
+//	    System.out.println("Draw done");
+	}
+
+	@Override
+	public void update(Observable arg0, Object g) {
+//		System.out.println("Sprite update is called");
+		paint((Graphics)g);
+	}
+}

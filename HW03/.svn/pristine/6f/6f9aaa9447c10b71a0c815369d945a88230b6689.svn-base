@@ -1,0 +1,56 @@
+package view;
+
+/**
+ * Following is the class defining the adapter that will connect the view-to-model communication for controlling actions
+ * 
+ * @author wq3
+ * @author ker7
+ */
+public interface IModelCtrlAdapter<TDropListItem> {
+
+	/**
+	 * Clears all of the balls currently on the canvas
+	 */
+	public void clearBalls();
+
+	/**
+	 * Loads a ball from a supplied class name
+	 * 
+	 * @param className A string designated to hold a ball represented by a class name in the form of model.balls.className
+	 */
+	public void loadBall(TDropListItem selectedItem);
+	
+	public TDropListItem combineStrategies(TDropListItem item1, TDropListItem item2);
+	
+	public void makeSwitcherBall();
+	
+	public void switchStrategy(TDropListItem item);
+	
+	public TDropListItem addStrategy(String classname);
+	
+	/**
+	 * No-op "null" adapter
+	 * See the web page on the Null Object Design Pattern at http://cnx.org/content/m17227/latest/
+	 */
+	public static final IModelCtrlAdapter<Object> NULL_OBJECT = new IModelCtrlAdapter<Object>() {
+		public void clearBalls() {
+		}
+
+		public void loadBall(Object selectedItem) {
+		}
+		
+		public Object combineStrategies(Object item1, Object item2) {
+			return null;
+		}
+		
+		public void makeSwitcherBall() {	
+		}
+		
+		public void switchStrategy(Object item) {
+		}
+		
+		public Object addStrategy(String classname) {
+			return null;
+		}
+	};
+}

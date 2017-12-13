@@ -1,0 +1,65 @@
+package model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * The AHost abstract class.
+ *
+ */
+public abstract class AHost implements IHost {
+	/**
+	 * the user name of the host.
+	 */
+	public final String userName;
+	/**
+	 * the server name of the host, which is used to bind the host to local registry.
+	 */
+	public final String hostName;
+	/**
+	 * the ip address where the host is created.
+	 */
+	public final String hostIP;
+	/**
+	 * the port the host is exported.
+	 */
+	public final int boundPort;
+	
+	/**
+	 * the chat rooms the host created or joined.
+	 */
+	protected List<IChatRoom> chatRooms;
+	/**
+	 * constructor.
+	 * @param userName the user name of the host.
+	 * @param hostName the server name of the host, which is used to bind the host to local registry.
+	 * @param hostIP the ip address where the host is created.
+	 * @param boundPort the port the host is exported.
+	 */
+	public AHost(String userName, String hostName, String hostIP, int boundPort) {
+		this.userName = userName;
+		this.hostName = hostName;
+		this.hostIP = hostIP;
+		this.boundPort = boundPort;
+		chatRooms = new ArrayList<>();
+	}
+	
+	@Override
+	public List<IChatRoom> getChatRoomList() {
+		return chatRooms;
+	}
+	
+	/**
+	 * add this host to chat room.
+	 * @param chatRoom The chat room the host to connect.
+	 */
+	public void addChatRoom(IChatRoom chatRoom) {
+		chatRooms.add(chatRoom);
+	}
+	
+	@Override
+	public String toString() {
+		return hostName + "@" + hostIP + ":" + boundPort;
+	}
+	
+}

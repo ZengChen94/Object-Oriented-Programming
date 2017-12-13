@@ -1,0 +1,33 @@
+package shape;
+
+import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * The Class CompoundShape is a class extended from Class AShape,
+ * The Class CompoundShape composites two or more AShape Objects.
+ * 
+ * @author Chen Zeng, cz39@rice.edu
+ * @author Yiqing Lu, yl128@rice.edu
+ * @version 1.0.20170826.1
+ * @since 1.0.20170826.1
+ *
+ */
+
+public class CompoundShape extends AShape {
+	private List<AShape> list = new ArrayList<AShape>();
+
+	public CompoundShape(AShape... shapes) {
+		for (AShape shape : shapes) {
+			this.list.add(shape);
+		}
+	}
+
+	@Override
+	public void paint(Graphics g) {
+		for (AShape shape : list) {
+			shape.paint(g);
+		}
+	}
+}

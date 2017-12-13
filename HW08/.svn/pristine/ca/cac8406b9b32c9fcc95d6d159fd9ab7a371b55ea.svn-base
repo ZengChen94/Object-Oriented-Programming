@@ -1,0 +1,41 @@
+package model.datapacket;
+
+import java.awt.Container;
+import java.rmi.RemoteException;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
+import common.ICmd2ModelAdapter;
+import team14.DataPacketChatRoom;
+import team14.IUser;
+import model.ILocalHostModelAdapter;
+import provided.datapacket.ADataPacketAlgoCmd;
+
+public class SendImageCmd<D> extends ADataPacketAlgoCmd<String, D, IUser, ICmd2ModelAdapter, DataPacketChatRoom<D>>{
+
+	private ICmd2ModelAdapter cmd2ModelAdapter;
+	
+	@Override
+	public String apply(Class<?> index, DataPacketChatRoom<D> host, IUser... params) {
+		ImageIcon data = (ImageIcon) host.getData();
+		IUser user = host.getSender();
+		Container panel = cmd2ModelAdapter.getContainer();
+		try {
+			JLabel label = new JLabel(user.getName() + "@" + user.getUUID() + ":");
+			panel.add(panel);
+			label = new JLabel(data);
+			panel.add(panel);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return data.toString();
+	}
+
+	@Override
+	public void setCmd2ModelAdpt(ICmd2ModelAdapter cmd2ModelAdpt) {
+		// TODO Auto-generated method stub
+		this.cmd2ModelAdapter = cmd2ModelAdpt;
+	}
+
+}

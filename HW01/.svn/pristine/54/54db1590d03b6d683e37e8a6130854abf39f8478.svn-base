@@ -1,0 +1,20 @@
+package shape;
+
+import java.awt.Color;
+import java.awt.Graphics;
+
+public class Oval extends AShape {
+	public Oval(int x_position, int y_position, int width, int height, Color color) {
+		this.x_position = x_position;
+		this.y_position = y_position;
+		this.color = color;
+		this.width = width;
+		this.height = height;
+	}
+
+	@Override
+	public void paint(Graphics g) {
+		g.setColor(color);
+		g.fillOval(x_position, y_position, width, height);
+	}
+}

@@ -1,0 +1,25 @@
+package model.paint.shape;
+
+import java.awt.geom.AffineTransform;
+import java.awt.Point;
+
+/**
+ * Concrete PolygonFactory that creates fish-shaped Polygons that have a longer tail and an open mouth.
+ * 
+ * @author Zhaohan Jia, Zhaohan.Jia@rice.edu
+ * @author Zheng Zhang, zz44@rice.edu
+ * @version 1.1.20160921.1
+ * @since 1.1.20160919.1
+ *
+ */
+public class Fish1PolygonFactory extends PolygonFactory {
+   /**
+    * Constructor that calls the PolygonFactory superclass constructor with the scale factor and polygon 
+    * points that define the fish shape.
+    */
+	public Fish1PolygonFactory(){
+		super(new AffineTransform(),0.1,new Point(-10,2),new Point(-10,-2),new Point(-7,-1),
+			 new Point(-4,-3),new Point(0,-1),new Point(-2,0),new Point(0,1),new Point(-4,3),
+			 new Point(-7,1));
+	}
+}

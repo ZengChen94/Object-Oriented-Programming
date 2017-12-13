@@ -1,0 +1,34 @@
+package model.strategy;
+
+import model.Ball;
+
+/**
+ * Following is the class defining the ball switching to set strategy.
+ * 
+ * @author cz39
+ * @author ker7
+ */
+public class SwitcherStrategy implements IUpdateStrategy {
+	private IUpdateStrategy strategy;
+	
+	public SwitcherStrategy(){
+		this.strategy = new StraightStrategy();
+	}
+	
+	/**
+	 * Update the strategy of the ball to strategy.
+	 * @param ball Ball to be updated.
+	 */
+	@Override
+	public void updateState(Ball ball) {
+		this.strategy.updateState(ball);
+	}
+	
+	/**
+	 * Set the strategy of the ball.
+	 * @param newStrategy The strategy to be set.
+	 */
+	public void setStrategy(IUpdateStrategy newStrategy){
+		this.strategy = newStrategy;
+	}
+}

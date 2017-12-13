@@ -1,0 +1,18 @@
+package strategy;
+
+import model.CBall;
+import model.IUpdateStrategy;
+
+/**
+ * The StraightBall strategy subclass
+ * as same as the bouncing ball
+ * @author Yue Pan
+ * @author Zihan Wang
+ * @version 1.0
+ * 
+ */
+public class StraightStrategy implements IUpdateStrategy {
+	@Override
+	public void updateState(CBall ball) {
+	}
+}

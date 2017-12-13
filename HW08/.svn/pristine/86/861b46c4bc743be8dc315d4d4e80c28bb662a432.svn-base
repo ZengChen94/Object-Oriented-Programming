@@ -1,0 +1,33 @@
+package model.cmd;
+
+import common.DataPacketChatRoom;
+import common.ICmd2ModelAdapter;
+import common.IUser;
+import provided.datapacket.ADataPacketAlgoCmd;
+
+/**
+ * The default cmd.
+ *
+ * @param <D> The data type held by the host.
+ */
+public class DefaultCmd<D> extends ADataPacketAlgoCmd<String, D, IUser, ICmd2ModelAdapter, DataPacketChatRoom<D>>{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1488535773377760808L;
+	
+	private ICmd2ModelAdapter cmd2ModelAdapter;
+	
+	@Override
+	public String apply(Class<?> index, DataPacketChatRoom<D> host, IUser... params) {
+		cmd2ModelAdapter.appendMsg("default data packet command");
+		return "default data packet command";
+	}
+
+	@Override
+	public void setCmd2ModelAdpt(ICmd2ModelAdapter cmd2ModelAdpt) {
+		this.cmd2ModelAdapter = cmd2ModelAdpt;
+	}
+
+}

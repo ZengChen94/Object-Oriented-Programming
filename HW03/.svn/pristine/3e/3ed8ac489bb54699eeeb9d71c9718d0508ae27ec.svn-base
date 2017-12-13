@@ -1,0 +1,30 @@
+package model.strategy;
+
+import java.awt.Color;
+
+import model.Ball;
+
+public class DisappearStrategy implements IUpdateStrategy {
+	/**
+	 * Counter for keeping track of how long a ball stays invisible
+	 **/
+	private int counter = 0;
+
+	/**
+	 * Field for maintaining the initial color of the ball even after re-appearing
+	 **/
+	private Color first;
+	
+	@Override
+	public void updateState(Ball ball) {
+		counter++;
+		ball.setColor(first);
+		if (counter >= 20) {
+			ball.setColor(new Color(240, 240, 240, 0));
+			if (counter >= 40) {
+				counter = 0;
+			}
+		}
+
+	}
+}

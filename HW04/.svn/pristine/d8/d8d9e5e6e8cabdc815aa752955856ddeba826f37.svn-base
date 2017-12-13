@@ -1,0 +1,20 @@
+package model;
+
+import java.awt.Graphics;
+
+
+
+public interface IPaintStrategy {
+	public void init(CBall host);
+	
+	public void paint(Graphics g, CBall host);
+	
+	public static final IPaintStrategy NULL_OBJECT = new IPaintStrategy(){
+		public void init(CBall host){
+			
+		}
+		public void paint(Graphics g, CBall host){
+			
+		}
+	};
+}

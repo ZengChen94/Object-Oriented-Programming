@@ -1,0 +1,43 @@
+package shape;
+
+import java.awt.Color;
+import java.awt.Graphics;
+
+/**
+ * Class Rectangle implements a shape of rectangle.
+ * Class Rectangle is a class extended from Class AShape.
+ * 
+ * @author Chen Zeng, cz39@rice.edu
+ * @author Yiqing Lu, yl128@rice.edu
+ * @version 1.0.20170826.1
+ * @since 1.0.20170826.1
+ *
+ */
+
+public class Rectangle extends AShape {
+	/**
+	 * Constructor of Rectangle.
+	 * @param x_position The x-coordinate of this Rectangle.
+	 * @param y_position The y-coordinate of this Rectangle.
+	 * @param width The width in pixels of this Rectangle.
+	 * @param height The height in pixels of this Rectangle.
+	 * @param color The color of this Rectangle.
+	 */
+	public Rectangle(int x_position, int y_position, int width, int height, Color color) {
+		this.x_position = x_position;
+		this.y_position = y_position;
+		this.color = color;
+		this.width = width;
+		this.height = height;
+	}
+
+	/**
+	 * Override the paint method.
+	 * Paint a width*height rectangle at (x_position, y_position) and fill the rectangle in its color.
+	 */
+	@Override
+	public void paint(Graphics g) {
+		g.setColor(color);
+		g.fillRect(x_position, y_position, width, height);
+	}
+}

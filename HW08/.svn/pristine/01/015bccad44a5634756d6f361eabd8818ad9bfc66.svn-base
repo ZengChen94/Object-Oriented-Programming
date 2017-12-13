@@ -1,0 +1,59 @@
+package common;
+
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.util.UUID;
+
+/**
+ * IReceiver defines a receiver in a chat room, which corresponds to a user (More accurately, a remote user's chat room) in the remote. 
+ * Similar to IUser, IReceiver is NOT transmitted to anyone. ONLY the STUB of this Remote object is ever transmitted.
+ */
+public interface IReceiver extends Remote {
+	
+	/**
+	 * Receive a data packet, process the data and return a status
+	 * @param data the received data packet
+	 * @return return from the execution of data.
+	 * @throws RemoteException if a network error occurs
+	 */
+	public <T> DataPacketChatRoom<Object> receive(DataPacketChatRoom<T> data) throws RemoteException;
+
+	/**
+	 * Get the user stub corresponding to the IReceiver interface
+	 * @return a user stub
+	 * @throws RemoteException if a network error occurs.
+	 */
+	public IUser getUserStub() throws RemoteException;
+	
+	
+	/**
+	 * Get the UUID of this receiver.
+	 * @return the UUID of this receiver.
+	 * @throws RemoteException if a network error occurs.
+	 */
+	public UUID getUUID() throws RemoteException;
+	
+	/**
+	 * Get a command for a specific type of data packet from this receiver.
+	 * This happens when this receiver's corresponding chat toom send a message to another receiver,
+	 * but that receiver does not have a algo to execute the data packet.
+	 * The algo is only stored in the receiver.
+	 * @param <T> if data type in the data packet.
+	 * @param id is the class type of the data.
+	 * @return a command for the specific class type.
+	 * @throws RemoteException if a network error occurs.
+	 */
+	public <T> DataPacketAlgoCmd<T> getCmd(Class<T> id) throws RemoteException;
+	
+//	/*******************************
+//	 * Removed from the final API
+//	 *******************************/
+//	/**
+//	 * A simply print method used in the development process for easy debug
+//	 * Should be removed from the actual API
+//	 * @param s the String to print
+//	 * @throws RemoteException if a network error occurs
+//	 */
+//	public void print(String s) throws RemoteException;
+	
+}

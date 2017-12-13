@@ -1,0 +1,36 @@
+package client.model.task;
+
+import java.math.BigDecimal;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+
+import provided.compute.ILocalTaskViewAdapter;
+import provided.compute.ITask;
+import provided.compute.ITaskResultFormatter;
+
+public class MultiTask implements ITask<ArrayList<String>>{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8780669441181081385L;
+
+	@Override
+	public ArrayList<String> execute() throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setTaskViewAdapter(ILocalTaskViewAdapter viewAdapter) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ITaskResultFormatter<ArrayList<String>> getFormatter() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

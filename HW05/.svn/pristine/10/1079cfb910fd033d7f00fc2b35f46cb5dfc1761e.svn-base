@@ -1,0 +1,25 @@
+package model;
+
+import util.Dispatcher;
+
+public class AUpdateStrategy implements IUpdateStrategy {
+
+//	@Override
+//	/**
+//	 * Initializes the ball.
+//	 */
+//	public void init(Ball ball) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+
+	@Override
+	/**
+	 * Updates the state of the ball.
+	 */
+	public void updateState(Ball ball, Dispatcher dispatcher) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

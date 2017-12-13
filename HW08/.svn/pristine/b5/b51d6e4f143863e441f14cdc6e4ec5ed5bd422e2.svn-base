@@ -1,0 +1,18 @@
+package model;
+
+import java.rmi.Remote;
+import java.util.List;
+
+/**
+ * The IHost interface.
+ * @param <E> generic type.
+ *
+ */
+public interface IHost<E> extends Remote {
+	
+	/**
+	 * get a list of chat rooms created by this host.
+	 * @return a list of chat rooms created by this host.
+	 */
+	public List<E> getChatRoomLIst();
+}

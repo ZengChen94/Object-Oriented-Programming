@@ -1,0 +1,102 @@
+package model.user;
+
+import java.io.Serializable;
+import java.rmi.RemoteException;
+import java.util.UUID;
+
+import common.IChatRoom;
+import common.IUser;
+
+/**
+ * User proxy.
+ *
+ */
+public class ProxyUser implements IUser, Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7619719275437782951L;
+	private IUser user;
+	
+	/**
+	 * constructor.
+	 * @param user a user.
+	 */
+	public ProxyUser(IUser user) {
+		this.user = user;
+	}
+
+	@Override
+	public String getName() throws RemoteException {
+		return user.getName();
+	}
+
+	@Override
+	public Iterable<IChatRoom> getChatRooms() throws RemoteException {
+		return user.getChatRooms();
+	}
+	
+	/**
+	 * Overridden equals() method to compare UUID's
+	 * @return  Equal if UUID's are equal.  False otherwise.
+	 */
+	@Override
+	public boolean equals(Object obj){
+		if (this == obj) return true;
+		if (!(obj instanceof IUser)) return false;
+		IUser that = (IUser) obj;
+		try {
+			// Equality of IUsers is same as equality of UUID's.
+			return this.getUUID().equals(((IUser)that).getUUID());
+		} catch (RemoteException e) {
+			// Deal with the exception without throwing a RemoteException.
+			System.err.println("ProxyUser.equals(): error getting UUID: "+ e);
+			e.printStackTrace();
+			// Fall through and return false
+		}
+		return false;
+	}		
+
+	/**
+	 * Overridden hashCode() method to create a hashCode from that is hashCode of the UUID since
+	 * equality is based on equality of UUID.
+	 * @return a hashCode of the UUID.	
+	 */
+	@Override
+	public int hashCode(){
+		try {
+			// hashCode is shorter than UUID, but Java spec says that if two objects are equal then
+			// their hashCodes must also be equal, which will be true here since equals() is based on 
+			// UUID equality.  Java does NOT require that unequal entities have unequal hashCodes. 
+			return this.getUUID().hashCode();
+		} catch (RemoteException e) {
+			// Deal with the exception without throwing a RemoteException.
+			System.err.println("ProxyUser.hashCode(): Error calling remote method on IUser stub: "+e);
+			e.printStackTrace();
+			return super.hashCode();  // return some sort of hashCode
+		}
+	}
+	
+	@Override
+	public String toString() {
+		try {
+			return getName();
+		} catch (RemoteException e) {
+			// Deal with the exception without throwing a RemoteException.
+			System.err.println("ProxyUser.toString(): Error calling remote method on IUser stub: "+e);
+			e.printStackTrace();
+			return super.toString();  // return some sort of toString.
+		}
+	}
+
+	@Override
+	public UUID getUUID() throws RemoteException {
+		return user.getUUID();
+	}
+
+	@Override
+	public void connect(IUser userStub) throws RemoteException {
+		user.connect(userStub);
+	}
+}

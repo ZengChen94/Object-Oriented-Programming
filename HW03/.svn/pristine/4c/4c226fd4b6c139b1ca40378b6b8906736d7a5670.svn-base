@@ -1,0 +1,7 @@
+package model.strategy;
+
+import model.Ball;
+
+public interface IUpdateStrategy {
+	public void updateState(Ball ball);
+}

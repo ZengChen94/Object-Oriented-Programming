@@ -1,0 +1,21 @@
+package model.user;
+
+import model.IModel2ViewAdapter;
+
+/**
+ * a concrete user class.
+ *
+ */
+public class User extends AUser {
+
+	/**
+	 * constructor.
+	 * @param userName the name of the user.
+	 * @param _viewAdapter to view adapter.
+	 */
+	public User(String userName, IModel2ViewAdapter _viewAdapter) {
+		super(userName, _viewAdapter);
+		// TODO Auto-generated constructor stub
+	}
+
+}

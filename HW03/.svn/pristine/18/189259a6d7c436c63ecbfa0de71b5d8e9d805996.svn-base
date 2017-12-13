@@ -1,0 +1,28 @@
+package model.strategy;
+
+import model.Ball;
+import util.Randomizer;
+
+/**
+ * Following is the class defining the ball with random color changing.
+ * 
+ * @author cz39
+ * @author ker7
+ */
+public class ColorChangingStrategy implements IUpdateStrategy {
+	private final int total = 20;
+	private int cnt = total;
+
+	/**
+	 * Random change the color of the ball.
+	 * @param ball Ball to be updated.
+	 */
+	@Override
+	public void updateState(Ball ball) {
+		cnt--;
+		if (cnt == 0) {
+			ball.setColor(Randomizer.singleton.randomColor());
+			cnt = total;
+		}
+	}
+}

@@ -1,0 +1,14 @@
+package model;
+
+import java.rmi.Remote;
+
+public abstract class AChatRoom implements Remote {
+	
+	public final String chatRoomName;
+	public final int boundPort;
+	
+	public AChatRoom(String chatRoomName, int boundPort) {
+		this.chatRoomName = chatRoomName;
+		this.boundPort = boundPort;
+	}
+}

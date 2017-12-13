@@ -1,0 +1,103 @@
+package model.chatroom;
+
+import java.rmi.RemoteException;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
+import commonG14.DataPacketChatRoom;
+import commonG14.IChatRoom;
+import commonG14.IUser;
+
+/**
+ * The abstract chat room.
+ *
+ */
+public abstract class AChatRoom implements IChatRoom {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9020884881226695481L;
+	/**
+	 * the name of the chat room.
+	 */
+	private final String chatRoomName;
+	
+	private final UUID uuid = UUID.randomUUID();
+	
+	/**
+	 * the users in this chat room.
+	 */
+	private Set<IUser> users;
+	
+	/**
+	 * constructor.
+	 * @param chatRoomName the name of the chat room.
+	 */
+	public AChatRoom(String chatRoomName) {
+		this.chatRoomName = chatRoomName;
+		users = new HashSet<>();
+	}
+	
+	@Override
+	public String getName() {
+		return chatRoomName;
+	}
+	
+	@Override
+	public Iterable<IUser> getUsers() {
+		return users;
+	}
+	
+	@Override
+	public <T> void sendPacketAsyn(DataPacketChatRoom<T> data) {
+		// spawn a new thread to handle the actual transmission, thus freeing
+		// this thread to return.
+		(new Thread() {
+			public void run() {
+				// Send the data packet to the chat room
+				Iterable<DataPacketChatRoom<?>> returnStatus = sendPacket(data);
+				// process the returned value...
+			}
+		}).start(); // start the new thread
+	}
+
+	@Override
+	public Iterable<DataPacketChatRoom<?>> sendPacket(DataPacketChatRoom<?> data) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public boolean addUser(IUser user) {
+		return users.add(user);
+	}
+	
+	@Override
+	public boolean removeUser(IUser user) {
+		return users.remove(user);
+	}
+	
+	@Override
+	public void sendMessage(String text, IUser sender) {
+		for (IUser user : users) {
+			try {
+				user.receiveMessage(text, this);
+			} catch (RemoteException e) {
+				// TODO
+			}
+		}
+	}
+	
+	@Override
+	public String toString() {
+		return getName();
+	}
+	
+	@Override
+	public UUID getUUID() {
+		return uuid;
+	}
+	
+}

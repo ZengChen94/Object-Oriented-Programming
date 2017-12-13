@@ -1,0 +1,10 @@
+package model.strategy;
+
+import model.Ball;
+
+public class StraightStrategy implements IUpdateStrategy {
+
+	@Override
+	public void updateState(Ball ball) {
+	}
+}

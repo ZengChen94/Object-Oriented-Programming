@@ -1,0 +1,33 @@
+package model.cmd;
+
+import common.DataPacketAlgoCmd;
+import common.DataPacketChatRoom;
+import common.ICmd2ModelAdapter;
+import common.IUser;
+
+/**
+ * Join chat room command. This command is used when one user wants to join a chat room.
+ * This user will send data packet with data type TypeJoinChatRoom to all the receivers in the chat room, 
+ * and this command will be executed by remote users to update the informations about this user.
+ *
+ *
+ */
+public class JoinChatRoomCmd extends DataPacketAlgoCmd<TypeJoinChatRoom> {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 472355148803370877L;
+	private ICmd2ModelAdapter cmd2ModelAdapter;
+
+	@Override
+	public Object apply(Class<?> index, DataPacketChatRoom<TypeJoinChatRoom> host, Object... params) {
+		IUser sender = host.getSender();
+		cmd2ModelAdapter.addUser(host.getSender());
+		return sender;
+	}
+	
+	@Override
+	public void setCmd2ModelAdpt(ICmd2ModelAdapter cmd2ModelAdapter) {
+		this.cmd2ModelAdapter = cmd2ModelAdapter;
+	}
+}

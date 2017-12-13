@@ -1,0 +1,26 @@
+package common;
+
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
+/**
+ * IReceiver defines a receiver in a chat room 
+ * Similar to IUser, IReceiver is NOT transmitted to anyone. ONLY the STUB of this Remote object is ever transmitted.
+ */
+public interface IReceiver extends Remote {
+	
+	/**
+	 * Receive a data packet, process the data and return a status
+	 * @param data the received data packet
+	 * @return the status data packet.
+	 * @throws RemoteException if a network error occurs
+	 */
+	public <T> DataPacketChatRoom<T> receive(DataPacketChatRoom<T> data) throws RemoteException;
+
+	/**
+	 * Get the user stub corresponding to the IReceiver interface
+	 * @return a user stub
+	 * @throws RemoteException if a network error occurs
+	 */
+	public IUser getUserStub() throws RemoteException;
+}

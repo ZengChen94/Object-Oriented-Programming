@@ -1,0 +1,66 @@
+package model.receiver;
+
+import java.rmi.RemoteException;
+
+import common.DataPacketAlgoCmd;
+import common.DataPacketChatRoom;
+import common.ICmd2ModelAdapter;
+import common.IReceiver;
+import common.IUser;
+import model.algo.DataPacketChatRoomAlgo;
+
+/**
+ * The receiver for a chat room.
+ *
+ */
+public class Receiver implements IReceiver {
+		
+	private IUser user;
+	/**
+	 * the receiver to chat room model adapter.
+	 */
+	private ICmd2ModelAdapter _modelAdapter;
+	
+	private DataPacketChatRoomAlgo algo;
+	
+	/**
+	 * Constructor.
+	 * @param user is the user of this receiver.
+	 * @param algo is the algo to execute data packet.
+	 * @param _modelAdapter is the receiver to chat room model adapter.
+	 */
+	public Receiver(IUser user, DataPacketChatRoomAlgo algo, ICmd2ModelAdapter _modelAdapter) {
+		this.user = user;
+		this.algo = algo;
+		this._modelAdapter = _modelAdapter;
+	}
+
+	@Override
+	public <T> DataPacketChatRoom<T> receive(DataPacketChatRoom<T> data) throws RemoteException {
+		Class<?> id = data.getData().getClass();
+		if (!algo.getAllIndices().contains(id)) {
+			
+			algo.setCmd(id, getCmd(id));
+		}
+		data.execute(algo);
+		// TODO return status.
+		return null;
+	}
+	
+	private <D> DataPacketAlgoCmd<D> getCmd(Class<D> id) throws RemoteException {
+		try {
+			DataPacketAlgoCmd<D> cmd = user.getCmd(id);
+			cmd.setCmd2ModelAdpt(_modelAdapter);
+			return cmd;
+		} catch (RemoteException e) {
+			e.printStackTrace();
+			throw new RemoteException("failed to getCmd(Class<D> id) from user: " + user); 
+		}
+	}
+
+	@Override
+	public IUser getUserStub() throws RemoteException {
+		return user;
+	}
+
+}

@@ -1,0 +1,26 @@
+package model;
+
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.util.List;
+
+/**
+ * The IHost interface.
+ *
+ */
+public interface IHost extends Remote {
+	
+	/**
+	 * get a list of chat rooms created by this host.
+	 * @return a list of chat rooms created by this host.
+	 * @throws RemoteException remote exception.
+	 */
+	public List<IChatRoom> getChatRoomList() throws RemoteException;
+
+	/**
+	 * get the host name;
+	 * @return the host name.
+	 * @throws RemoteException remote exception.
+	 */
+	public String getHostDescription() throws RemoteException;
+}

@@ -1,0 +1,18 @@
+package model;
+
+import java.io.Serializable;
+import java.rmi.RemoteException;
+
+/**
+ * IChatRoom interface.
+ *
+ */
+public interface IChatRoom extends Serializable {
+	
+	/**
+	 * get chat room name.
+	 * @return the name of the chat room.
+	 * @throws RemoteException remote exception.
+	 */
+	public String getChatRoomName() throws RemoteException;
+}

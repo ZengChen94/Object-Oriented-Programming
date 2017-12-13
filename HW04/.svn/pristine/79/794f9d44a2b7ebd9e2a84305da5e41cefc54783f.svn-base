@@ -1,0 +1,35 @@
+package strategy;
+
+import model.CBall;
+import model.IUpdateStrategy;
+
+/**
+ * The method switch the ball strategy 
+ * 
+ * @author Yue Pan
+ * @author Zihan Wang
+ * @version 1.0
+ * 
+ */
+public class SwitcherStrategy implements IUpdateStrategy {
+
+	private IUpdateStrategy strategy;
+
+	/**
+	 * constructor of switcherStrategy
+	 */
+	public SwitcherStrategy() {
+		strategy = new StraightStrategy();
+	}
+
+	@Override
+	public void updateState(CBall _ball) {
+
+		strategy.updateState(_ball);
+	}
+
+	public void setNew(IUpdateStrategy Nstrategy) {
+		strategy = Nstrategy;
+	}
+
+}

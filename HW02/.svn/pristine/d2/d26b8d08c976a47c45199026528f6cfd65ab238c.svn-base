@@ -1,0 +1,26 @@
+package view;
+
+public interface IView2ModelCtrlAdapter {
+	/**
+	 * This method clear the balls.
+	 */
+	public void clearBalls();
+
+	/**
+	 * This method load in the ball as type of ballType.
+	 * @param ballType The type of ABall to be added.
+	 */
+	public void loadBall(String ballType);
+
+	/**
+	 * No-op singleton implementation of IView2ModelCtrlAdapter 
+	 * See the web page on the Null Object Design Pattern at http://cnx.org/content/m17227/latest/
+	 */
+	public static final IView2ModelCtrlAdapter NULL_OBJECT = new IView2ModelCtrlAdapter() {
+		public void loadBall(String ballType) {
+		}
+
+		public void clearBalls() {
+		}
+	};
+}

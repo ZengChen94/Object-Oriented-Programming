@@ -1,0 +1,24 @@
+package model.paint;
+
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+
+import model.CBall;
+
+public class UprightShapePaintStrategy extends ShapePaintStrategy {
+	public UprightShapePaintStrategy(Shape shape) {
+		super(shape);
+	}
+	
+	public UprightShapePaintStrategy(AffineTransform at, Shape shape) {
+		super(at, shape);
+	}
+	
+	@Override
+	protected void paintCfg(java.awt.Graphics g, CBall host){
+		super.paintCfg(g, host);
+		if(Math.abs(Math.atan2(host.getVel().y, host.getVel().x))> Math.PI/2.0) {
+		    getAT().scale(1.0, -1.0);
+		}  
+	}
+}

@@ -1,0 +1,142 @@
+package view;
+
+import shape.*;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+import java.awt.Graphics;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import java.awt.Color;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
+
+public class MainAppFrame extends JFrame {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1057458952401270427L;
+	private JPanel contentPane;
+	private JTextField text_north;
+
+	private AShape shapeSpc = new SpecificShape(250, 100, 100, 100, 0, 180, Color.RED);
+
+	private void start() {
+		setVisible(true);
+	}
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					MainAppFrame frame = new MainAppFrame();
+					frame.start();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public MainAppFrame() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BorderLayout(0, 0));
+		setContentPane(contentPane);
+
+		JPanel panel_north = new JPanel();
+		panel_north.setBackground(Color.YELLOW);
+		contentPane.add(panel_north, BorderLayout.NORTH);
+
+		JLabel label_north = new JLabel("Hello World");
+		panel_north.add(label_north);
+
+		JButton btnChangeText = new JButton("Change Text!");
+		btnChangeText.setToolTipText(
+				"The content in the panel will be changed if you type in the textField and then press the button \"Change Text!\"");
+		btnChangeText.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String str = text_north.getText();
+				label_north.setText(str);
+				System.out.print("Button works!\n");
+			}
+		});
+		panel_north.add(btnChangeText);
+
+		text_north = new JTextField();
+		panel_north.add(text_north);
+		text_north.setColumns(10);
+
+		JPanel panel_center = new JPanel() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 4503987996713838001L;
+
+			/**
+			* Overridden paintComponent method to paint a shape in the panel.
+			* @param g The Graphics object to paint on.
+			**/
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g); // Do everything normally done first, e.g. clear the screen.
+				g.setColor(Color.RED); // Set the color to use when drawing
+				g.fillOval(75, 100, 20, 40); // paint a filled 20x40 red ellipse whose upper left corner is at (75, 100)
+				shapeSpc.paint(g);
+			}
+		};
+		panel_center.setBackground(Color.ORANGE);
+		contentPane.add(panel_center, BorderLayout.CENTER);
+
+		JPanel panel_south = new JPanel();
+		panel_south.setBackground(Color.GREEN);
+		contentPane.add(panel_south, BorderLayout.SOUTH);
+
+		JButton button_oval = new JButton("Oval!");
+		button_oval.setToolTipText("The center panel will paint an oval shape if the button \"Oval!\" is pressed");
+		button_oval.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				shapeSpc = new Oval(250, 100, 100, 50, Color.CYAN);
+				panel_center.repaint();
+			}
+		});
+		panel_south.add(button_oval);
+
+		JButton btnRectangle = new JButton("Rectangle!");
+		btnRectangle.setToolTipText(
+				"The center panel will paint a rectangle shape if the button \"Rectangle!\" is pressed");
+		btnRectangle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				shapeSpc = new Rectangle(250, 100, 100, 50, Color.blue);
+				panel_center.repaint();
+			}
+		});
+		panel_south.add(btnRectangle);
+
+		JButton button_compound = new JButton("Compound!");
+		button_compound
+				.setToolTipText("The center panel will paint a conpound shape if the button \"Compound!\" is pressed");
+		button_compound.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				shapeSpc = new CompoundShape(new Oval(250, 40, 60, 60, Color.GRAY),
+						new Rectangle(250, 100, 60, 60, Color.RED));
+				panel_center.repaint();
+			}
+		});
+		panel_south.add(button_compound);
+	}
+
+}

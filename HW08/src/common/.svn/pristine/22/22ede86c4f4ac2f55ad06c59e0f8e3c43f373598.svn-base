@@ -1,0 +1,14 @@
+package common;
+
+/**
+ * A lambda command for processing ReturnStatus
+ */
+public interface IVoidLambdaDP {
+
+	/**
+	 * Apply the command on the ReturnStatus
+	 * @param data ReturnStatus
+	 */
+	public void apply(ReturnStatus data);
+	
+}

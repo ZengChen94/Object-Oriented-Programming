@@ -1,0 +1,27 @@
+package strategy;
+
+import model.CBall;
+import model.IUpdateStrategy;
+
+/**
+ * The BreathingBall strategy 
+ * @author Yue Pan
+ * @author Zihan Wang
+ * @version 1.0
+ */
+public class BreathingStrategy implements IUpdateStrategy {
+
+	/**
+	 * The scale for changing rad.
+	 */
+	private double scale = 1;
+	private double angle = 0;
+
+	@Override
+	public void updateState(CBall ball) {
+		scale = 1 + Math.sin(angle);
+		angle += 0.5;
+		ball.setRadius((int) (Math.round(10 * scale)));
+	}
+
+}

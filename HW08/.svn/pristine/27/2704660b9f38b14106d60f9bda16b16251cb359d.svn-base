@@ -1,0 +1,38 @@
+package model.algo;
+
+import javax.swing.ImageIcon;
+
+import common.DataPacketAlgoCmd;
+import common.ICmd2ModelAdapter;
+import model.cmd.DisplayImageCmd;
+import model.cmd.DisplayTextCmd;
+import model.cmd.JoinChatRoomCmd;
+import model.cmd.LeaveChatRoomCmd;
+import model.cmd.TypeJoinChatRoom;
+import model.cmd.TypeLeaveChatRoom;
+import provided.datapacket.DataPacketAlgo;
+
+/**
+ * The data packet algo for chat room app.
+ *
+ */
+public class DataPacketChatRoomAlgo extends DataPacketAlgo<Object,Object> {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8119780355923674125L;
+
+	/**
+	 * Constructor.
+	 * @param defaultCmd is the data packet default command.
+	 * @param cmd2ModelAdapter is the command to chat room model adapter.
+	 */
+	public DataPacketChatRoomAlgo(DataPacketAlgoCmd<?> defaultCmd, ICmd2ModelAdapter cmd2ModelAdapter) {
+		super(defaultCmd);
+		setCmd(ImageIcon.class, new DisplayImageCmd(cmd2ModelAdapter));
+		setCmd(String.class, new DisplayTextCmd(cmd2ModelAdapter));
+		setCmd(TypeJoinChatRoom.class, new JoinChatRoomCmd(cmd2ModelAdapter));
+		setCmd(TypeLeaveChatRoom.class, new LeaveChatRoomCmd(cmd2ModelAdapter));
+	}
+}

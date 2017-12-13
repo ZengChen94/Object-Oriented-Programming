@@ -1,0 +1,34 @@
+package model.cmd;
+
+import common.DataPacketAlgoCmd;
+import common.DataPacketChatRoom;
+import common.ICmd2ModelAdapter;
+import common.IUser;
+
+/**
+ * Leave chat room command. This command is used when one user wants to leave a chat room.
+ * This user will send data packet with data type TypeLeaveChatRoom to all the receivers in the chat room, 
+ * and this command will be executed by remote users to update the informations about this user.
+ *
+ */
+public class LeaveChatRoomCmd extends DataPacketAlgoCmd<TypeLeaveChatRoom> {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4661703049739445045L;
+	
+	private ICmd2ModelAdapter cmd2ModelAdapter;
+
+	@Override
+	public Object apply(Class<?> index, DataPacketChatRoom<TypeLeaveChatRoom> host, Object... params) {
+		IUser sender = host.getSender();
+		cmd2ModelAdapter.removeUser(sender);
+		return sender;
+	}
+	
+	@Override
+	public void setCmd2ModelAdpt(ICmd2ModelAdapter cmd2ModelAdapter) {
+		this.cmd2ModelAdapter = cmd2ModelAdapter;
+	}
+}

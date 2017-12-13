@@ -1,0 +1,36 @@
+package model;
+
+/**
+ * chat room to string decorator.
+ *
+ */
+public class ToStringDecoratorChatRoom implements IChatRoom {
+
+	private IChatRoom chatRoom;
+	
+	/**
+	 * constructor
+	 * @param chatRoom a chat room.
+	 */
+	public ToStringDecoratorChatRoom(IChatRoom chatRoom) {
+		this.chatRoom = chatRoom;
+	}
+	
+	@Override
+	public String getChatRoomName() {
+		try {
+			return chatRoom.getChatRoomName();
+		} catch(Exception e) {
+			System.err.println("remote getChatRoomName exception" + "\n");
+			e.printStackTrace();
+			System.exit(-1);
+			return "remote getChatRoomName exception";
+		}
+	}
+	
+	@Override
+	public String toString() {
+		return getChatRoomName();
+	}
+
+}

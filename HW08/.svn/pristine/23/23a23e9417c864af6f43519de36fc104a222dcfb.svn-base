@@ -1,0 +1,53 @@
+package model.receiver;
+
+import java.rmi.RemoteException;
+
+import common.DataPacketAlgoCmd;
+import common.DataPacketChatRoom;
+import common.IReceiver;
+import common.IUser;
+import model.user.AUser;
+import provided.datapacket.DataPacketAlgo;
+
+/**
+ * The receiver for a chat room.
+ *
+ */
+public class Receiver implements IReceiver {
+		
+	private AUser user;
+	
+	/**
+	 * constructor.
+	 * @param user the user of this receiver.
+	 */
+	public Receiver(AUser user) {
+		this.user = user;
+	}
+
+	@Override
+	public <T> DataPacketChatRoom<T> receive(DataPacketChatRoom<T> data) throws RemoteException {
+		Class<?> id = data.getData().getClass();
+		if (!user.getAlgo().getAllIndices().contains(id)) {
+			user.getAlgo().setCmd(id, getCmd(id));
+		}
+		data.execute(user.getAlgo());
+		// TODO return status.
+		return null;
+	}
+	
+	private <D> DataPacketAlgoCmd<D> getCmd(Class<D> id) throws RemoteException {
+		try {
+			return user.getCmd(id);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+			throw new RemoteException("failed to getCmd(Class<D> id) from user: " + user); 
+		}
+	}
+
+	@Override
+	public IUser getUserStub() throws RemoteException {
+		return user;
+	}
+
+}

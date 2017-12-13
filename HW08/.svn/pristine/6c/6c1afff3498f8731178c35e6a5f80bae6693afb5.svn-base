@@ -1,0 +1,136 @@
+package controller;
+
+import java.awt.Container;
+import java.io.File;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+
+import javax.swing.ImageIcon;
+
+import common.IChatRoom;
+import common.ICmd2ModelAdapter;
+import common.IReceiver;
+import common.IUser;
+import model.ChatRoomModel;
+import model.IChatRoomModel2ChatRoomViewAdapter;
+import model.IChatRoomModel2ModelAdapter;
+import model.MainModel;
+import model.algo.DataPacketChatRoomAlgo;
+import model.receiver.Receiver;
+import util.PortManager;
+import view.ChatRoomView;
+import view.IChatRoomView2ModelAdapter;
+
+/**
+ * Chat room mini controller.
+ *
+ */
+public class ChatRoomController {
+	
+	private ChatRoomView<IUser> chatRoomView;
+	private ChatRoomModel chatRoomModel;
+	private IReceiver receiver;
+	
+	/**
+	 * Constructor.
+	 * @param currentUser The current user of this chat room, who send data packets to this chat room.
+	 * @param chatRoom The chat room object of this chat room.
+	 * @param model The main chat room model. 
+	 * @param algo is the algo to execute data packet.
+	 */
+	public ChatRoomController(IUser currentUser, IChatRoom chatRoom, MainModel model, DataPacketChatRoomAlgo algo) {
+		
+		chatRoomView = new ChatRoomView<IUser>(
+				new IChatRoomView2ModelAdapter() {
+
+			@Override
+			public void exitChatRoom() {
+				chatRoomModel.exitChatRoom();
+			}
+
+			@Override
+			public void sendText(String text) {
+				chatRoomModel.sendText(text);
+			}
+
+			@Override
+			public void sendFile(File file) {
+				chatRoomModel.sendFile(file);
+				
+			}
+
+			@Override
+			public void sendEmoji(ImageIcon img) {
+				chatRoomModel.sendEmoji(img);
+				
+			}
+			
+		}, chatRoom.getName());
+		
+		chatRoomModel = new ChatRoomModel(currentUser, chatRoom, 
+				new IChatRoomModel2ChatRoomViewAdapter() {
+
+					@Override
+					public void appendMessage(String text) {
+						chatRoomView.appendMessage(text);
+					}
+
+					@Override
+					public void listUsers(Iterable<IUser> users) {
+					}
+			
+		}, 
+				new IChatRoomModel2ModelAdapter() {
+
+					@Override
+					public void exitChatRoom(IChatRoom chatRoom) {
+						model.exitChatRoom(chatRoom);
+					}
+			
+		});
+		
+		receiver = new Receiver(currentUser, algo, new ICmd2ModelAdapter() {
+			
+			@Override
+			public void removeUser(IUser user) {
+				chatRoomModel.removeUser(user);
+			}
+			
+			@Override
+			public Container getContainer() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			
+			@Override
+			public void appendMsg(String text) {
+				chatRoomModel.sendText(text);
+			}
+			
+			@Override
+			public void addUser(IUser user) {
+				chatRoomModel.addUser(user);
+			}
+		});
+		
+		
+		// when a user join a chat room, the user create a IReceiver object, and export to stub.
+		int boundPort = PortManager.Singleton.getAvailPort();
+		try {
+			receiver = (IReceiver) UnicastRemoteObject.exportObject(receiver, boundPort);
+		} catch (RemoteException e) {
+			System.out.println("fail to join a chat room " + chatRoom + " using port " + boundPort);
+			e.printStackTrace();
+		}
+		chatRoom.addIReceiverStub(receiver);
+	}
+	
+	/**
+	 * start the controller.
+	 */
+	public void start() {
+		chatRoomView.start();
+		chatRoomModel.start();
+	}
+
+}

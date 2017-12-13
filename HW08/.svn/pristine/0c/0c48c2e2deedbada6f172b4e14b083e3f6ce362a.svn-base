@@ -1,0 +1,29 @@
+package view;
+
+import javax.swing.JTextField;
+
+public interface IView2ModelAdapter<HostObj, ChatRoomObj> {
+
+	void startServer(String userName, String serverName);
+
+	void makeChatRoom(String chatRoomName);
+
+	void connectToIP(String ipAddress);
+
+	void inviteUser(HostObj host);
+
+	/**
+	 * Request chat rooms list the host created or joined.
+	 * @param host a host how created chat rooms.
+	 */
+	void requestChatRooms(HostObj host);
+
+	void exit();
+
+	void exitChatRoom(ChatRoomObj chatRoom);
+
+	void sendText(String text, ChatRoomObj chatRoom);
+
+	void joinChatRoom(ChatRoomObj chatRoom);
+
+}

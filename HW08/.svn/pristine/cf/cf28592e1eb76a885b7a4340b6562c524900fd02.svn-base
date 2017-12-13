@@ -1,0 +1,10 @@
+package model;
+
+public class ChatRoom extends AChatRoom {
+
+	public ChatRoom(String chatRoomName) {
+		super(chatRoomName);
+		// TODO Auto-generated constructor stub
+	}
+
+}

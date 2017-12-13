@@ -1,0 +1,32 @@
+package model;
+
+import util.IDispatcher;
+
+
+/**
+ * The abstract class of UpdateStrategy
+ * 
+ * @author Ye Wang
+ * @author Chen Zeng
+ * @version 1.0
+ * 
+ */
+public class AUpdateStrategy<TDispMsg> implements IUpdateStrategy<TDispMsg> {
+	@Override
+	/**
+	 * Updates the state of the ball.
+	 */
+	public void updateState(Ball context, IDispatcher<TDispMsg> dispatcher) {
+		// TODO Auto-generated method stub
+		
+	}
+	/**
+	 * Initial the state of the ball.
+	 */
+	@Override
+	public void init(Ball context) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

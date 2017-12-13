@@ -1,0 +1,38 @@
+package model.balls;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Point;
+
+/**
+ * Following is a class defining what a straight ball is
+ * 
+ * @author wq3
+ * @author ker7
+ */
+public class AStraightBall extends ABall {
+
+	/**
+	 * AStraighBall Constructor
+	 * 
+	 * @param startLoc The beginning location of the ball, generated randomly based on the canvas's size
+	 * @param startRadius The beginning radius of the ball, generated randomly from 10 to 20 pixels
+	 * @param startVel The beginning velocity of the ball, generated randomly from a rectangle (0,0,10,25)
+	 * @param startColor The beginning color of the ball, generated randomly
+	 * @param theCanvas The canvas that the ball (and all other balls) is being drawn on
+	 */
+	public AStraightBall(Point startLoc, int startRadius, Point startVel, Color startColor, Component theCanvas) {
+		super(startLoc, startRadius, startVel, startColor, theCanvas);
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * The variant method doesn't do anything for straight ball as "move()" takes care of its movement
+	 */
+	@Override
+	public void variant() {
+		// TODO Auto-generated method stub
+
+	}
+
+}

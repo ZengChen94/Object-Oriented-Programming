@@ -1,0 +1,64 @@
+package common;
+
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.util.UUID;
+
+/**
+ * IUser interface defines a set of operations of a user in our chatApp
+ * IUser is NOT transmitted to anyone. ONLY the STUB of this Remote object is ever transmitted.
+ */
+public interface IUser extends Remote {
+	
+	/**
+	 * The name the IUser object will be bound to in the RMI Registry
+	 */
+	public static final String BOUND_NAME = "USER";
+
+	/**
+	 * The port that the client will use to communicate with the IUser object
+	 * Note that this port must be opened of inbound traffic on the server machine
+	 */
+	public static final int BOUND_PORT = 2100;
+	
+	/**
+	 * Get the name of the user.
+	 * Typically, this name is a combination of user's name and his/her ip address
+	 * so that it can be used to identify the user 
+	 * @return The name of the user
+	 * @throws RemoteException if a network error occurs
+	 */
+	public String getName() throws RemoteException;
+	
+	/**
+	 * Get UUid of the user, which is a unique identifier for the user
+	 * @return uuid of the user
+	 * @throws RemoteException if a network error occurs
+	 */
+	public UUID getUUid() throws RemoteException;
+	
+	/**
+	 * Get all chat rooms the user has joined.
+	 * @return All chat rooms the user has joined
+	 * @throws RemoteException if a network error occurs
+	 */
+	public Iterable<IChatRoom> getChatRooms() throws RemoteException;
+	
+	
+	/**
+	 * A method to be called by remote user for auto-connect-back
+	 * @param userStub A remote user stub
+	 * @throws RemoteException if a network error occurs 
+	 */
+	public void connect(IUser userStub) throws RemoteException;
+	
+	
+	/**
+	 * Get a command for a specific type of data packet from remote user
+	 * @param <T> the data type that the data packet
+	 * @param id the class type of the data packet
+	 * @return a command for specific the class type
+	 * @throws RemoteException if a network error occurs 
+	 */
+	public <T> DataPacketAlgoCmd<T> getCmd(Class<T> id) throws RemoteException;
+}

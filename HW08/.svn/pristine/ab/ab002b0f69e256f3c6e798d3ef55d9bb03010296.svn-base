@@ -1,0 +1,211 @@
+package view;
+
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.border.EmptyBorder;
+import javax.swing.ImageIcon;
+import javax.swing.JSplitPane;
+import javax.swing.JList;
+import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+/**
+ * The chat room view.
+ * @param <UserObj> the user generic object.
+ */
+public class ChatRoomView<UserObj> extends JFrame {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7822436832079216116L;
+	
+	private IChatRoomView2ModelAdapter _modelAdapter;
+	private String chatRoomName;
+	
+	private final JPanel pnlChatRoom_main = new JPanel();
+	private final JTabbedPane tabbedPaneUpdateComp = new JTabbedPane(JTabbedPane.TOP);
+	private final JTextArea textAreaUpdateComp1 = new JTextArea();
+	private final JTextArea textAreaUpdateComp2 = new JTextArea();
+	private final JTextArea textAreaUpdateComp3 = new JTextArea();
+	private final JPanel pnlChatRoomUserList = new JPanel();
+	private final JSplitPane splitPnlInput = new JSplitPane();
+	private final JScrollPane spTextInput = new JScrollPane();
+	private final JTextArea taInput = new JTextArea();
+	private final JPanel pnlButtons = new JPanel();
+	private final JButton btnSendText = new JButton("Send Text");
+	private final JButton btnSendFile = new JButton("Send File");
+	private final JButton btnSendEmoji = new JButton("Send Emoji");
+	private final JPanel pnlUsers = new JPanel();
+	private final JList<UserObj> userList = new JList<UserObj>();
+	private final JButton btnExistRoom = new JButton("Exist Room");
+	
+	/**
+	 * @param _modelAdapter view to model adapter.
+	 * @param chatRoomName the name of the chat room.
+	 */
+	public ChatRoomView(IChatRoomView2ModelAdapter _modelAdapter, String chatRoomName) {
+		this._modelAdapter = _modelAdapter;
+		this.chatRoomName = chatRoomName;
+		initGUI();
+	}
+	
+	private void initGUI() {
+		
+		// TODO necessary?
+		setBounds(100, 100, 500, 300);
+
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
+		setContentPane(pnlChatRoom_main);
+		pnlChatRoom_main.setBorder(new EmptyBorder(5, 5, 5, 5));
+		pnlChatRoom_main.setLayout(new BorderLayout(0, 0));
+		pnlChatRoom_main.add(tabbedPaneUpdateComp, BorderLayout.CENTER);
+		tabbedPaneUpdateComp.addTab("Update COMP1", null, textAreaUpdateComp1, null);
+		tabbedPaneUpdateComp.addTab("Update COMP2", null, textAreaUpdateComp2, null);
+		tabbedPaneUpdateComp.addTab("Update COMP3", null, textAreaUpdateComp3, null);
+		getContentPane().add(pnlChatRoomUserList, BorderLayout.WEST);
+		pnlChatRoomUserList.setLayout(new BorderLayout(0, 0));
+		pnlUsers.setToolTipText("users information panel");
+		
+		pnlChatRoomUserList.add(pnlUsers, BorderLayout.CENTER);
+		pnlUsers.setLayout(new GridLayout(2, 0, 0, 0));
+		userList.setToolTipText("users in the chat room");
+		userList.setBorder(new TitledBorder(null, "Users", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		
+		pnlUsers.add(userList);
+		btnExistRoom.setToolTipText("Exist this chat room");
+		
+		pnlChatRoomUserList.add(btnExistRoom, BorderLayout.NORTH);
+		splitPnlInput.setToolTipText("input text, select files and emojis");
+		
+		pnlChatRoom_main.add(splitPnlInput, BorderLayout.SOUTH);
+		spTextInput.setToolTipText("");
+		
+		splitPnlInput.setLeftComponent(spTextInput);
+		taInput.setToolTipText("input text here");
+		
+		spTextInput.setViewportView(taInput);
+		
+		splitPnlInput.setRightComponent(pnlButtons);
+		splitPnlInput.setResizeWeight(1);
+		pnlButtons.setLayout(new GridLayout(3, 0, 0, 0));
+		btnSendText.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sendText();
+			}
+		});
+		btnSendText.setToolTipText("Send text");
+		pnlButtons.add(btnSendText);
+		btnSendFile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sendFile();
+			}
+		});
+		btnSendFile.setToolTipText("Send files");
+		pnlButtons.add(btnSendFile);
+		btnSendEmoji.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sendEmoji();
+			}
+		});
+		btnSendEmoji.setToolTipText("Send emojis");
+		pnlButtons.add(btnSendEmoji);
+	}
+	
+	/**
+	 * append text to chat room text area.
+	 * @param text the text to append to chat room text area.
+	 */
+	public void appendMessage(String text) {
+		textAreaUpdateComp1.append(text + "\n");
+	}
+
+	/**
+	 * list users in this chat room in the left text area.
+	 * @param users the users in this chat room.
+	 */
+	public void userList(UserObj[] users) {
+		userList.setListData(users);
+	}
+	
+	/** 
+	 * get the name of this chat room view component.
+	 */
+	@Override
+	public String getName() {
+		return chatRoomName;
+	}
+	
+	/**
+	 * Send a message to this chat room.
+	 */
+	public void sendText() {
+		_modelAdapter.sendText(taInput.getText());
+	}
+	
+	/**
+	 * Send a file to this chat room.
+	 */
+	public void sendFile() {
+		JFileChooser fc = new JFileChooser();
+		int returnVal = fc.showOpenDialog(null);
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			File file = fc.getSelectedFile();
+			_modelAdapter.sendFile(file);
+		} else {
+			System.out.println("Cancelled");
+		}
+	}
+	
+
+	
+	/**
+	 * Send a emoji to this chat room.
+	 */
+	public void sendEmoji() {
+		JFileChooser fc = new JFileChooser();
+		fc.addChoosableFileFilter(new FileNameExtensionFilter("jpg", "png", "bmp", "gif"));
+		int returnVal = fc.showOpenDialog(null);
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			File file = fc.getSelectedFile();
+			ImageIcon img = new ImageIcon(file.getAbsolutePath());
+			_modelAdapter.sendEmoji(img);
+		} else {
+			System.out.println("Cancelled");
+		}
+	}
+	
+	/**
+	 * start the GUI.
+	 */
+	public void start() {
+		setVisible(true);
+	}
+	
+//	/**
+//	 * Launch the application.
+//	 * @param args input arguments.
+//	 */
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					(new ChatRoomView<>(null, "test room")).start();
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
+}

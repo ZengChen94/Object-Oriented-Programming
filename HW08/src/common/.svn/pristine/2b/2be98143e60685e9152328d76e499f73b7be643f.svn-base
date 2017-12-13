@@ -1,0 +1,11 @@
+package common;
+
+import java.io.Serializable;
+
+/**
+ * Data type for removing receiver. Common data type.
+ * This interface has no method.
+ */
+public interface IRemoveReceiver extends Serializable {
+
+}

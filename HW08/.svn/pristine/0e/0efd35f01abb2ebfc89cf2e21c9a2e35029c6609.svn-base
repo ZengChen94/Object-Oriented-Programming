@@ -1,0 +1,26 @@
+package model;
+
+/**
+ * The abstract chat room.
+ *
+ */
+public abstract class AChatRoom implements IChatRoom {
+	
+	/**
+	 * the name of the chat room.
+	 */
+	public final String chatRoomName;
+	
+	/**
+	 * constructor.
+	 * @param chatRoomName the name of the chat room.
+	 */
+	public AChatRoom(String chatRoomName) {
+		this.chatRoomName = chatRoomName;
+	}
+	
+//	@Override
+//	public String toString() {
+//		return chatRoomName;
+//	}
+}

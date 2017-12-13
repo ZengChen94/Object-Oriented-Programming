@@ -1,0 +1,99 @@
+package model.user;
+
+import java.rmi.RemoteException;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
+import team1.DataPacketChatRoom;
+import team1.IChatRoom;
+import team1.IUser;
+import model.IModel2ViewAdapter;
+import model.chatroom.ChatRoom;
+import model.datapacket.LeaveCmd;
+
+/**
+ * The abstract user class.
+ *
+ */
+public abstract class AUser implements IUser {
+	
+	/**
+	 * the name of the user.
+	 */
+	public final String userName;
+	
+	/**
+	 * the chat rooms the user
+	 */
+	private Set<IChatRoom> chatRooms;
+	
+	/**
+	 * UUID
+	 */
+	UUID uuid;
+	
+	/**
+	 * to view adapter.
+	 */
+	private IModel2ViewAdapter _viewAdapter;
+	
+	/**
+	 * constructor
+	 * @param userName the name of the user.
+	 * @param _viewAdapter to view adapter.
+	 */
+	public AUser(String userName, IModel2ViewAdapter _viewAdapter) {
+		this.userName = userName;
+		this._viewAdapter = _viewAdapter;
+		chatRooms = new HashSet<>();
+		this.uuid = UUID.randomUUID();
+	}
+
+	@Override
+	public String getName() throws RemoteException {
+		return userName;
+	}
+
+	@Override
+	public Iterable<IChatRoom> getChatRooms() throws RemoteException {
+		return chatRooms;
+	}
+
+	@Override
+	public boolean joinChatRoom(IChatRoom chatRoom) throws RemoteException {
+		return chatRoom.addUser(this) && chatRooms.add(chatRoom);
+	}
+
+	@Override
+	public boolean leaveChatRoom(IChatRoom chatRoom) throws RemoteException {
+		if (chatRoom.removeUser(this) && chatRooms.remove(chatRoom)) {
+			chatRoom.sendPacketAsyn(new DataPacketChatRoom<LeaveCmd>(LeaveCmd.class, new LeaveCmd(), this));
+		}
+		return false;
+	}
+
+	@Override
+	public IChatRoom createChatRoom(String name) throws RemoteException {
+		IChatRoom newChatRoom = new ChatRoom(name);
+		chatRooms.add(newChatRoom);
+		newChatRoom.addUser(this);
+		return newChatRoom;
+	}
+
+	@Override
+	public UUID getUUID() {
+		return uuid;
+	}
+	
+	@Override
+	public void receiveMessage(String text, IChatRoom chatRoom) {
+		System.out.println("receive message from " + chatRoom);
+		for (IChatRoom cr : chatRooms) {
+			if (cr.equals(chatRoom)) {
+				System.out.println("find chat room to append message " + cr);
+				_viewAdapter.appendToChatRoom(text, cr);
+			}
+		}
+	}
+}

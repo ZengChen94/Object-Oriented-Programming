@@ -1,0 +1,145 @@
+package model;
+
+import java.io.File;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.ImageIcon;
+
+import common.DataPacketChatRoom;
+import common.IChatRoom;
+import common.IReceiver;
+import common.IUser;
+
+/**
+ * The chat room model in the chat room mini MVC.
+ *
+ */
+public class ChatRoomModel {
+	
+	/**
+	 * Chat room model to chat room view adapter.
+	 */
+	private IChatRoomModel2ChatRoomViewAdapter _viewAdapter;
+	private IChatRoomModel2ModelAdapter _mainModelAdapter;
+	private IChatRoom chatRoom;
+	private IUser sender;
+	
+	/**
+	 * Constructor.
+	 * @param currentUser The local user of this chat room. This user send data packets to this chat room.
+	 * @param chatRoom the chat room for this chat room model.
+	 * @param _mainModelAdapter the chat room model to main view adapter.
+	 * @param _viewAdapter the chat room model to chat room view adapter.
+	 */
+	public ChatRoomModel(IUser currentUser, IChatRoom chatRoom, IChatRoomModel2ChatRoomViewAdapter _viewAdapter, IChatRoomModel2ModelAdapter _mainModelAdapter) {
+		this.sender = currentUser;
+		this.chatRoom = chatRoom;
+		this._viewAdapter = _viewAdapter;
+		this._mainModelAdapter = _mainModelAdapter;
+	}
+
+	/**
+	 * User exit this chat room.
+	 */
+	public void exitChatRoom() {
+		_viewAdapter.appendMessage("this chat room is quiting...");
+		_mainModelAdapter.exitChatRoom(chatRoom);
+	}
+
+	/**
+	 * Send text to the chat room in this chat room model.
+	 * @param text is sent to the chat room in this chat room model.
+	 */
+	public void sendText(String text) {
+		chatRoom.sendPacket(new DataPacketChatRoom<String>(String.class, text, sender));
+		_viewAdapter.appendMessage("message sent:" + text);
+	}
+
+	/**
+	 * Send file to the chat room in this chat room model.
+	 * @param file is sent to the chat room in this chat room model.
+	 */
+	public void sendFile(File file) {
+		chatRoom.sendPacket(new DataPacketChatRoom<File>(File.class, file, sender));
+		_viewAdapter.appendMessage("file sent: " + file);
+	}
+
+	/**
+	 * Send emoji to the chat room in this chat room model.
+	 * @param emoji is sent to the chat room in this chat room model.
+	 */
+	public void sendEmoji(ImageIcon emoji) {
+		chatRoom.sendPacket(new DataPacketChatRoom<ImageIcon>(ImageIcon.class, emoji, sender));
+		_viewAdapter.appendMessage("emoji sent: " + emoji);
+	}
+
+	/**
+	 * start the chat room model
+	 */
+	public void start() {
+		List<IUser> users = new ArrayList<>();
+		for (IReceiver receiver : chatRoom.getIReceiverStubs()) {
+			try {
+				users.add(receiver.getUserStub());
+			} catch (RemoteException e) {
+				System.out.println("failed to get user stubs from receiver: " + receiver);
+				e.printStackTrace();
+			}
+		}
+		_viewAdapter.listUsers(users);
+	}
+
+	/**
+	 * Remove a user in this chat room.
+	 * @param user is the user to remove in this chat room.
+	 */
+	public void removeUser(IUser user) {
+		IReceiver temp = null;
+		// first find the user receiver.
+		for (IReceiver receiver : chatRoom.getIReceiverStubs()) {
+			try {
+				if (receiver.getUserStub().equals(user)) {
+					temp = receiver;
+					break;
+				}
+			} catch (RemoteException e) {
+				System.out.println("failed to get user stub for receiver: " + receiver);
+				e.printStackTrace();
+			}
+		}
+		if (temp == null) {
+			System.out.println("failed to remove, can not find user: " + user);
+		}
+		// remove the receiver in this chat room.
+		chatRoom.removeIReceiverStub(temp);
+	}
+
+	/**
+	 * Add a user in this chat room.
+	 * @param user is the user to add to this chat room.
+	 */
+	public void addUser(IUser user) {
+		try {
+			IChatRoom tempCR = null;
+			for (IChatRoom chatRoom : user.getChatRooms()) {
+				if (this.chatRoom.equals(chatRoom)) {
+					tempCR = chatRoom;
+					break;
+				}
+			}
+			IReceiver tempRC = null;
+			for (IReceiver receiver : tempCR.getIReceiverStubs()) {
+				if (receiver.getUserStub().equals(user)) {
+					tempRC = receiver;
+					break;
+				}
+			}
+			chatRoom.addIReceiverStub(tempRC);
+		} catch (RemoteException e) {
+			System.out.println("remote error for addUser in chat room model");
+			e.printStackTrace();
+		}
+	}
+}

@@ -1,0 +1,216 @@
+package model;
+
+import java.rmi.RemoteException;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.function.Consumer;
+
+import team14.IChatRoom;
+import team14.IUser;
+import model.chatroom.ChatRoom;
+import model.chatroom.ProxyChatRoom;
+import model.user.AUser;
+import model.user.ProxyUser;
+import model.user.User;
+import provided.rmiUtils.IRMIUtils;
+import provided.rmiUtils.IRMI_Defs;
+import provided.rmiUtils.RMIUtils;
+
+/**
+ * chat room model.
+ *
+ */
+public class ChatRoomAppModel {
+	
+	private IModel2ViewAdapter _model2ViewAdapter;
+	
+	private Consumer<String> outputCmd = s -> ChatRoomAppModel.this._model2ViewAdapter.appendInfo((s) + "\n");
+	
+	private IRMIUtils rmiUtils = new RMIUtils(outputCmd);
+	
+	/**
+	 * the local registry.
+	 */
+	private Registry localRegistry;
+	/**
+	 * the remote registries of connected IPs.
+	 */
+	private List<Registry> registries;
+	/**
+	 * the users on all the connected remote IPs and local IP.
+	 */
+	private List<IUser> users;
+	/**
+	 * private local host corrently logged in.
+	 */
+	private AUser localUser;
+	/**
+	 * the available ports on the local ip.
+	 */
+	private Queue<Integer> availPorts;
+	
+	
+	/**
+	 * constructor.
+	 * @param _model2ViewAdapter the local model to view adapter.
+	 */
+	public ChatRoomAppModel(IModel2ViewAdapter _model2ViewAdapter) {
+		this._model2ViewAdapter = _model2ViewAdapter;
+		registries = new ArrayList<>();
+		users = new ArrayList<>();
+		availPorts = new LinkedList<>();
+		// set the available ports number from 2101 to 2199, 
+		// 2100 is the port for host.
+		for (int i = 2101; i < 2200; i++) {
+			availPorts.offer(i);
+		}
+	}
+
+	/**
+	 * Start the server. Create a host, export to host stub, bind the host stub to the register.
+	 * add host to users list.
+	 * @param userName the user name of this host.
+	 * @param serverName the server name.
+	 */
+	public void startServer(String userName, String serverName) {
+		if (availPorts.isEmpty()) {
+			_model2ViewAdapter.appendInfo("created too many users on this ip, not available port numbers.\n");
+			return;
+		}
+		try {
+			int boundPort = availPorts.poll();
+			localUser = new User(userName, _model2ViewAdapter);
+			IUser localuserstub = (IUser) UnicastRemoteObject.exportObject(localUser, boundPort);
+			localRegistry.bind(serverName, localuserstub);
+			_model2ViewAdapter.appendInfo("Host bound to " + serverName + " resigter \n");
+		} catch (Exception e) {
+			System.err.println("Host exception" + "\n");
+			e.printStackTrace();
+			System.exit(-1);
+		}
+	}
+
+	/**
+	 * Create a Chat Room. Create a chatRoom, export to chatRoom stub.
+	 * add chatRoom to chatRooms list.
+	 * @param chatRoomName the name of the chat room.
+	 * @return the created chat room stub.
+	 */
+	public IChatRoom makeChatRoom(String chatRoomName) {
+		try {
+			// chat room proxy, although may be unnecessary.
+			IChatRoom chatRoom = new ProxyChatRoom(new ChatRoom(chatRoomName));
+			localUser.joinChatRoom(chatRoom);
+			_model2ViewAdapter.createChatRoomComponent(chatRoom, chatRoomName);
+			return chatRoom;
+		} catch (Exception e) {
+			System.err.println("Chat Room exception" + "\n");
+			e.printStackTrace();
+			System.exit(-1);
+			return null;
+		}
+	}
+
+	/**
+	 * Connect to a IP. List all the 
+	 * @param ipAddress the remote ip address.
+	 */
+	public void connectToIP(String ipAddress) {
+		try {
+			// get the remote registry.
+			_model2ViewAdapter.appendInfo("Locating registry at " + ipAddress +"...\n");
+			Registry remoteRegistry = rmiUtils.getRemoteRegistry(ipAddress);
+			System.out.println("obtained remote resigtry");
+			registries.add(remoteRegistry);
+			_model2ViewAdapter.appendInfo("Found registry : " + remoteRegistry + "\n");
+			String[] hostNames = remoteRegistry.list();
+			for (String hostName: hostNames) {
+				IUser host = (IUser) remoteRegistry.lookup(hostName);
+				users.add(new ProxyUser(host));
+				_model2ViewAdapter.appendInfo("Found userstub: " + host + "\n");
+			}
+			System.out.println("obtained remote user stub");
+			_model2ViewAdapter.listConnectedUsers(users);
+			
+		} catch (Exception e) {
+			_model2ViewAdapter.appendInfo("Error connecting to " + ipAddress + ": " + e + "\n");
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * invite a user to a chat room.
+	 * @param user the user to invite.
+	 */
+	public void inviteUser(IUser user) {
+		// TODO Auto-generated method stub
+	}
+
+	/**
+	 * request a list of chat rooms created by host.
+	 * @param user a user.
+	 */
+	public void requestChatRooms(IUser user) {
+		try {
+			_model2ViewAdapter.listChatRooms(user.getChatRooms());
+		} catch (Exception e) {
+			_model2ViewAdapter.appendInfo("Error listing chat rooms on host " + user + ": " + e + "\n");
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * exit the program.
+	 */
+	public void exit() {
+		// TODO Auto-generated method stub
+	}
+
+	/**
+	 * exit a chat room.
+	 * @param chatRoom the chat room to exit.
+	 */
+	public void exitChatRoom(IChatRoom chatRoom) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * the local user send text to chatRoom.
+	 * @param text the text to send the chat room.
+	 * @param chatRoom the chat room to send text.
+	 */
+	public void sendText(String text, IChatRoom chatRoom) {
+		chatRoom.sendMessage(text, localUser);
+	}
+
+	/**
+	 * start the model, start RMI.
+	 */
+	public void start() {
+		_model2ViewAdapter.appendInfo("starting RMI... \n");
+		rmiUtils.startRMI(IRMI_Defs.CLASS_SERVER_PORT_SERVER);
+		_model2ViewAdapter.appendInfo("Looking for registry... \n");
+		localRegistry = rmiUtils.getLocalRegistry();
+		_model2ViewAdapter.appendInfo("Found registry: " + localRegistry + "\n");
+	}
+
+	/**
+	 * local host join a chat room.
+	 * @param chatRoom a chat room.
+	 */
+	public void joinChatRoom(IChatRoom chatRoom) {
+		try {
+			localUser.joinChatRoom(chatRoom);
+			_model2ViewAdapter.createChatRoomComponent(chatRoom, chatRoom.getName());
+		} catch (RemoteException e) {
+			// Deal with the exception without throwing a RemoteException.
+			System.err.println("localUser.joinChatRoom(chatRoom): Error calling remote method on IUser stub: "+e);
+			e.printStackTrace();
+		}
+	}
+}

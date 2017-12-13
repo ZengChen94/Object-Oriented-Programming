@@ -1,0 +1,5 @@
+package model.paint.strategy;
+
+public class Fish2PaintStrategy {
+
+}

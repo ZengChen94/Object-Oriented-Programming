@@ -1,0 +1,97 @@
+package view;
+
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+
+/**
+ * The chat room component.
+ *
+ * @param <HostObj> the host object.
+ * @param <ChatRoomObj> the chat room object.
+ */
+public class ChatRoomComponent<HostObj, ChatRoomObj> extends JPanel {
+	
+	private final JPanel pnlChatRoom_main = new JPanel();
+	private final JTabbedPane tabbedPaneUpdateComp = new JTabbedPane(JTabbedPane.TOP);
+	private final JTextArea textAreaUpdateComp1 = new JTextArea();
+	private final JTextArea textAreaUpdateComp2 = new JTextArea();
+	private final JTextArea textAreaUpdateComp3 = new JTextArea();
+	private final JPanel pnlTaOutPut = new JPanel();
+	private final JTextArea taOutput = new JTextArea();
+	private final JPanel pnlChatRoomUserList = new JPanel();
+	private final JPanel pnlExist = new JPanel();
+	private final JButton btnExitRoom = new JButton("Exit Room");
+	private final JScrollPane scrollPane = new JScrollPane();
+	private final JTextArea taUsers = new JTextArea();
+	private final JLabel lblUsers = new JLabel("Users");
+	
+	private IView2ModelAdapter<HostObj, ChatRoomObj> _view2ModelAdapter;
+	private ChatRoomObj chatRoom;
+	
+	/**
+	 * @param chatRoom the chat room object for this chat room component.
+	 * @param _view2ModelAdapter view to model adapter.
+	 */
+	public ChatRoomComponent(ChatRoomObj chatRoom, IView2ModelAdapter<HostObj, ChatRoomObj> _view2ModelAdapter) {
+		this._view2ModelAdapter = _view2ModelAdapter;
+		this.chatRoom = chatRoom;
+		
+		this.setLayout(new BorderLayout(0, 0));
+		this.add(pnlChatRoom_main, BorderLayout.CENTER);
+		pnlChatRoom_main.setLayout(new BorderLayout(0, 0));
+		pnlChatRoom_main.add(tabbedPaneUpdateComp, BorderLayout.CENTER);
+		tabbedPaneUpdateComp.addTab("Update COMP1", null, textAreaUpdateComp1, null);
+		tabbedPaneUpdateComp.addTab("Update COMP2", null, textAreaUpdateComp2, null);
+		tabbedPaneUpdateComp.addTab("Update COMP3", null, textAreaUpdateComp3, null);
+		pnlChatRoom_main.add(pnlTaOutPut, BorderLayout.SOUTH);
+		pnlTaOutPut.setLayout(new GridLayout(0, 1, 0, 0));
+		taOutput.setRows(3);
+		pnlTaOutPut.add(taOutput);
+		this.add(pnlChatRoomUserList, BorderLayout.WEST);
+		pnlChatRoomUserList.setLayout(new BorderLayout(0, 0));
+		pnlChatRoomUserList.add(pnlExist, BorderLayout.SOUTH);
+		pnlExist.setLayout(new GridLayout(0, 1, 0, 0));
+		btnExitRoom.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_view2ModelAdapter.exitChatRoom(chatRoom);
+			}
+		});
+		pnlExist.add(btnExitRoom);
+		pnlChatRoomUserList.add(scrollPane, BorderLayout.CENTER);
+		scrollPane.setViewportView(taUsers);
+		scrollPane.setColumnHeaderView(lblUsers);
+	}
+
+	/**
+	 * append text to chat room text area.
+	 * @param text the text to append to chat room text area.
+	 */
+	public void textAreaAppend(String text) {
+		textAreaUpdateComp1.append(text + "\n");
+	}
+
+	/**
+	 * list users in this chat room in the left text area.
+	 * @param users the users in this chat room.
+	 */
+	public void listUsers(String users) {
+		taUsers.setText(users);
+	}
+	
+	public ChatRoomObj getChatRoom() {
+		return chatRoom;
+	}
+	
+	public void sendMessage(String text) {
+		_view2ModelAdapter.sendText(text, chatRoom);
+	}
+}

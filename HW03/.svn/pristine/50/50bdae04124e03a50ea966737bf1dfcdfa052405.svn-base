@@ -1,0 +1,34 @@
+package view;
+
+/**
+ * Following is the class defining the adapter that will connect the view-to-model communication for controlling actions
+ * 
+ * @author wq3
+ * @author ker7
+ */
+public interface IModelCtrlAdapter {
+
+	/**
+	 * Clears all of the balls currently on the canvas
+	 */
+	public void clearBalls();
+
+	/**
+	 * Loads a ball from a supplied class name
+	 * 
+	 * @param className A string designated to hold a ball represented by a class name in the form of model.balls.className
+	 */
+	public void loadBall(String className);
+
+	/**
+	 * No-op "null" adapter
+	 * See the web page on the Null Object Design Pattern at http://cnx.org/content/m17227/latest/
+	 */
+	public static final IModelCtrlAdapter NULL_OBJECT = new IModelCtrlAdapter() {
+		public void clearBalls() {
+		}
+
+		public void loadBall(String className) {
+		}
+	};
+}

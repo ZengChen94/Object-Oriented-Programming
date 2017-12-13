@@ -1,0 +1,89 @@
+package controller;
+
+import javax.swing.JTextField;
+
+import model.ChatRoom;
+import model.ChatRoomAppModel;
+import model.Host;
+import model.IModel2ViewAdapter;
+import view.ChatRoomAppView;
+import view.IView2ModelAdapter;
+
+public class ChatRoomAppController {
+	
+	private ChatRoomAppView<Host, ChatRoom> view;
+	private ChatRoomAppModel model;
+	
+	/**
+	 * Constructor.
+	 */
+	public ChatRoomAppController() {
+		view = new ChatRoomAppView<>(new IView2ModelAdapter<Host, ChatRoom>() {
+
+			@Override
+			public void startServer(String userName, String serverName) {
+				model.startServer(userName, serverName);
+			}
+
+			@Override
+			public void makeChatRoom(String chatRoomName) {
+				model.makeChatRoom(chatRoomName);
+			}
+
+			@Override
+			public void connectToIP(JTextField ipAddress) {
+				model.connectToIP(ipAddress);
+			}
+
+			@Override
+			public void inviteUser(Host host) {
+				model.inviteUser(host);
+			}
+
+			@Override
+			public void joinChatRoom(Host chatRoom) {
+				model.joinChatRoom(chatRoom);
+			}
+
+			@Override
+			public void exit() {
+				model.exit();
+			}
+
+			@Override
+			public void exitChatRoom(ChatRoom chatRoom) {
+				model.exitChatRoom(chatRoom);
+			}
+
+			@Override
+			public void sendText(String text) {
+				model.sendText(text);
+			}
+			
+		});
+		model = new ChatRoomAppModel(new IModel2ViewAdapter() {
+			
+			@Override
+			public Object appendInfo(String string) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		});
+	}
+	
+	/**
+	 * start the controller.
+	 */
+	public void start() {
+		view.start();
+		model.start();
+	}
+	
+	/**
+	 * @param args input arguments.
+	 */
+	public static void main(String[] args) {
+		ChatRoomAppController controller = new ChatRoomAppController();
+		controller.start();
+	}
+}

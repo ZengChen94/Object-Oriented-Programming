@@ -1,0 +1,13 @@
+package common;
+
+/**
+ * Defined different return status for different situations,
+ * including SUCCESS for successfully receiving the message,
+ * FAILURE for failing in receiving the message,
+ * UNKNOWN for unknown situations.
+ */
+public enum ReturnStatus {
+	SUCCESS,
+	FAILURE,
+	UNKNOWN
+}

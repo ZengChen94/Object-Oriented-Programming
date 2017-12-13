@@ -1,0 +1,91 @@
+package model.user;
+
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+
+import common.DataPacketAlgoCmd;
+import common.DataPacketChatRoom;
+import common.IChatRoom;
+import common.IReceiver;
+import common.IUser;
+import model.IModel2ViewAdapter;
+import provided.datapacket.DataPacketAlgo;
+
+/**
+ * a concrete user class.
+ *
+ */
+public class User extends AUser {
+
+	private IModel2ViewAdapter _viewAdapter;
+	
+	private DataPacketAlgo<String, String> algo;
+	
+	/**
+	 * constructor.
+	 * @param userName the name of the user.
+	 * @param _viewAdapter to view adapter.
+	 * @param algo the algo for data packet.
+	 */
+	public User(String userName, IModel2ViewAdapter _viewAdapter, DataPacketAlgo<String, String> algo) {
+		super(userName);
+		this._viewAdapter = _viewAdapter;
+		this.algo = algo;
+	}
+
+	/**
+	 * connect to a remote userStub, and show the chat room list userStub has joined in the main view.
+	 */
+	@Override
+	public void connect(IUser userStub) throws RemoteException {
+		(new Thread() {
+			@Override
+			public void run() {
+				try {
+					_viewAdapter.listChatRooms(userStub.getChatRooms());
+				} catch (RemoteException e) {
+					System.out.println("remote exception when remote userStub.getChatRooms()");
+					e.printStackTrace();
+				}
+			}
+		}).start();
+	}
+
+	@Override
+	public <T> DataPacketAlgoCmd<T> getCmd(Class<T> id) throws RemoteException {
+		return (DataPacketAlgoCmd<T>) algo.getCmd(id);
+	}
+	
+	@Override
+	public void joinChatRoom(IChatRoom chatRoom, int boundPort) {
+		chatRooms.add(chatRoom);
+		// when a user join a chat room, the user create a IReceiver object, and export to stub.
+		IReceiver receiver = new IReceiver() {
+			
+			@Override
+			public <T> DataPacketChatRoom<T> receive(DataPacketChatRoom<T> data) throws RemoteException {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			
+			@Override
+			public IUser getUserStub() throws RemoteException {
+				return User.this;
+			}
+		};
+		try {
+			receiver = (IReceiver) UnicastRemoteObject.exportObject(receiver, boundPort);
+		} catch (RemoteException e) {
+			System.out.println("fail to join a chat room " + chatRoom + " using port " + boundPort);
+			e.printStackTrace();
+		}
+		chatRoom.addIReceiverStub(receiver);
+		_viewAdapter.appendInfo("successfully joined the chat room: " + chatRoom);
+	}
+	
+	@Override
+	public DataPacketAlgo<String, String> getAlgo() {
+		return algo;
+	}
+
+}

@@ -1,0 +1,15 @@
+package view;
+
+public interface IView2ModelCtrlAdapter {
+	public void clearBalls();
+	
+	public void loadBall(String ballType);
+	
+	public static final IView2ModelCtrlAdapter NULL_OBJECT = new IView2ModelCtrlAdapter() {
+		public void loadBall(String ballType){
+		}
+		
+		public void clearBalls(){
+		}
+	};
+}

@@ -1,0 +1,25 @@
+package model.cmd;
+
+import java.io.Serializable;
+
+/**
+ * When one user wants to join a chat room,
+ * he will send data packet with data type TypeJoinChatRoom to all the receivers in the chat room, and executed by remote users
+ * to update the informations about this user.
+ *
+ */
+public class TypeJoinChatRoom implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4031739518376977278L;
+	
+	/**
+	 * Join chat room type singleton object.
+	 */
+	public static final TypeJoinChatRoom Singleton = new TypeJoinChatRoom();
+	
+	private TypeJoinChatRoom() {}
+		
+}

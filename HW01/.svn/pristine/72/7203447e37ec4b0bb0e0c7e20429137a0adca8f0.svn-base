@@ -1,0 +1,41 @@
+package shape;
+
+import java.awt.Color;
+import java.awt.Graphics;
+
+public class SpecificShape extends AShape {
+	private int startAngle, arcAngle;
+
+	public SpecificShape(int x_position, int y_position, int width, int height, int startAngle, int arcAngle,
+			Color color) {
+		this.x_position = x_position;
+		this.y_position = y_position;
+		this.color = color;
+		this.width = width;
+		this.height = height;
+		this.startAngle = startAngle;
+		this.arcAngle = arcAngle;
+	}
+
+	public void set_startAngle(int value) {
+		this.startAngle = value;
+	}
+
+	public void set_arcAngle(int value) {
+		this.arcAngle = value;
+	}
+
+	public int get_startAngle() {
+		return this.startAngle;
+	}
+
+	public int get_arcAngle() {
+		return this.arcAngle;
+	}
+
+	@Override
+	public void paint(Graphics g) {
+		g.setColor(color);
+		g.fillArc(x_position, y_position, width, height, startAngle, arcAngle);
+	}
+}

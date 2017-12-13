@@ -1,0 +1,46 @@
+package model.host;
+
+import java.rmi.RemoteException;
+import java.util.List;
+
+import common.IChatRoom;
+
+/**
+ * host proxy.
+ *
+ */
+public class ProxyHost implements IHost {
+	
+	private IHost host;
+	
+	/**
+	 * constructor.
+	 * @param host a host
+	 */
+	public ProxyHost(IHost host) {
+		this.host = host;
+	}
+
+	@Override
+	public List<IChatRoom> getChatRoomList() throws RemoteException {
+		return host.getChatRoomList();
+	}
+	
+	@Override
+	public String toString() {
+		return getHostDescription();
+	}
+
+	@Override
+	public String getHostDescription() {
+		try {
+			return host.getHostDescription();
+		} catch(Exception e) {
+			System.err.println("remote getHostDescription exception" + "\n");
+			e.printStackTrace();
+			System.exit(-1);
+			return "remote getHostDescription exception";
+		}
+	}
+
+}

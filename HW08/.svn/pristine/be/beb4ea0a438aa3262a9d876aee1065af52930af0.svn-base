@@ -1,0 +1,16 @@
+package model;
+
+/**
+ * A concrete chat room object.
+ *
+ */
+public class ChatRoom extends AChatRoom {
+
+	/**
+	 * @param chatRoomName the name of the chat room.
+	 */
+	public ChatRoom(String chatRoomName) {
+		super(chatRoomName);
+		// TODO Auto-generated constructor stub
+	}
+}

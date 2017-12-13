@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<com.yattasolutions.uml.diagrams.classifier:ClassDiagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.yattasolutions.diagrams="http://ns.yatta-solutions.com/umllab/diagrams/1.1.0" xmlns:com.yattasolutions.uml.diagrams.classifier="http://ns.yatta-solutions.com/umllab/diagrams/classifier/1.1.0" xmi:id="_wDvqkK4jEeeb3J7owtunSg">
+  <modelElement href="HW06.uml#_t1opsK4iEeeb3J7owtunSg"/>
+  <edges xsi:type="com.yattasolutions.diagrams:ConnectionVisual" xmi:id="_1iekIK4jEeeb3J7owtunSg" targetItem="_1igZWa4jEeeb3J7owtunSg" sourceItem="_1ibg0K4jEeeb3J7owtunSg"/>
+  <edges xsi:type="com.yattasolutions.diagrams:ConnectionVisual" xmi:id="_1ifLMa4jEeeb3J7owtunSg" targetItem="_1igZYa4jEeeb3J7owtunSg" sourceItem="_1ifLMK4jEeeb3J7owtunSg"/>
+  <edges xsi:type="com.yattasolutions.uml.diagrams.classifier:AssociationVisual" xmi:id="_1igZUK4jEeeb3J7owtunSg" source="_1igZWa4jEeeb3J7owtunSg">
+    <modelElement href="HW06.uml#_vO-bMa4iEeeb3J7owtunSg"/>
+    <stereotypes xmi:id="_1igZUa4jEeeb3J7owtunSg" name="Reference">
+      <modelElement href="HW06.uml#_vO_pUK4iEeeb3J7owtunSg"/>
+    </stereotypes>
+    <nameVisual xmi:id="_1igZUq4jEeeb3J7owtunSg" text=""/>
+    <sourceRole xmi:id="_1igZU64jEeeb3J7owtunSg" aggregationKind="NONE" name="">
+      <modelElement href="HW06.uml#_vO-bMq4iEeeb3J7owtunSg"/>
+      <visibility xmi:id="_1igZVK4jEeeb3J7owtunSg" label="+"/>
+      <cardinality xmi:id="_1igZVa4jEeeb3J7owtunSg" label="1" max="1" min="1"/>
+    </sourceRole>
+    <targetRole xmi:id="_1igZVq4jEeeb3J7owtunSg" aggregationKind="NONE" name="keySign" navigable="true">
+      <modelElement href="HW06.uml#_vM3iYK4iEeeb3J7owtunSg"/>
+      <visibility xmi:id="_1igZV64jEeeb3J7owtunSg" label="-"/>
+      <cardinality xmi:id="_1igZWK4jEeeb3J7owtunSg" label="1" max="1" min="1"/>
+    </targetRole>
+  </edges>
+  <edges xsi:type="com.yattasolutions.diagrams:ConnectionVisual" xmi:id="_1iqKUK4jEeeb3J7owtunSg" targetItem="_1irYcK4jEeeb3J7owtunSg" sourceItem="_1ilR0K4jEeeb3J7owtunSg"/>
+  <nodes xsi:type="com.yattasolutions.diagrams:CommentVisual" xmi:id="_1ibg0K4jEeeb3J7owtunSg" sourceConnectionVisual="_1iekIK4jEeeb3J7owtunSg" text="The PlayMusic visitor extends the APhraseVisitor&#xD;&#xA;It implements the algorithm to play music for different hosts.&#xD;&#xA; *&#xD;&#xA;@author Yuchang Shen&#xD;&#xA;@author Chen Zeng&#xD;&#xA;@version 1.0&#xD;&#xA; *" item="_1igZWa4jEeeb3J7owtunSg">
+    <modelElement href="HW06.uml#_vOf6Fa4iEeeb3J7owtunSg"/>
+  </nodes>
+  <nodes xsi:type="com.yattasolutions.diagrams:CommentVisual" xmi:id="_1ifLMK4jEeeb3J7owtunSg" sourceConnectionVisual="_1ifLMa4jEeeb3J7owtunSg" text="Constructor" item="_1igZYa4jEeeb3J7owtunSg">
+    <modelElement href="HW06.uml#_vOf6Fq4iEeeb3J7owtunSg"/>
+  </nodes>
+  <nodes xsi:type="com.yattasolutions.diagrams:CommentVisual" xmi:id="_1ilR0K4jEeeb3J7owtunSg" sourceConnectionVisual="_1iqKUK4jEeeb3J7owtunSg" text="The ToString visitor extends the APhraseVisitor&#xD;&#xA;It implements the algorithm to transfer music into text for different hosts.&#xD;&#xA; *&#xD;&#xA;@author Yuchang Shen&#xD;&#xA;@author Chen Zeng&#xD;&#xA;@version 1.0&#xD;&#xA; *" item="_1irYcK4jEeeb3J7owtunSg">
+    <modelElement href="HW06.uml#_vOf6F64iEeeb3J7owtunSg"/>
+  </nodes>
+  <nodes xsi:type="com.yattasolutions.uml.diagrams.classifier:ClassifierVisual" xmi:id="_1igZWa4jEeeb3J7owtunSg" comments="_1ibg0K4jEeeb3J7owtunSg" targetConnectionVisual="_1iekIK4jEeeb3J7owtunSg" name="PlayMusicVisitor" associationsOut="_1igZUK4jEeeb3J7owtunSg">
+    <modelElement href="HW06.uml#_vCQ04K4iEeeb3J7owtunSg"/>
+    <visualProperties xmi:id="_1igZWq4jEeeb3J7owtunSg" position="20.0,30.0" size="-1.0,-1.0"/>
+    <visibility xmi:id="_1igZW64jEeeb3J7owtunSg" label="+"/>
+    <attributes xmi:id="_1igZXK4jEeeb3J7owtunSg" name="keySign">
+      <modelElement href="HW06.uml#_vM3iYK4iEeeb3J7owtunSg"/>
+      <stereotypes xmi:id="_1igZXa4jEeeb3J7owtunSg" name="LegacyStyledElement">
+        <modelElement href="HW06.uml#_vM3iYa4iEeeb3J7owtunSg"/>
+      </stereotypes>
+      <visibility xmi:id="_1igZXq4jEeeb3J7owtunSg" label="-"/>
+      <cardinality xmi:id="_1igZX64jEeeb3J7owtunSg" label="1" max="1" min="1"/>
+      <type xmi:id="_1igZYK4jEeeb3J7owtunSg" name="KeySignature">
+        <modelElement href="HW06.uml#_vFquMK4iEeeb3J7owtunSg"/>
+      </type>
+    </attributes>
+    <operations xmi:id="_1igZYa4jEeeb3J7owtunSg" comments="_1ifLMK4jEeeb3J7owtunSg" targetConnectionVisual="_1ifLMa4jEeeb3J7owtunSg" name="PlayMusicVisitor">
+      <modelElement href="HW06.uml#_vCSDAK4iEeeb3J7owtunSg"/>
+      <keywords xmi:id="_1igZYq4jEeeb3J7owtunSg" keyword="create"/>
+      <visibility xmi:id="_1igZY64jEeeb3J7owtunSg" label="+"/>
+      <cardinality xmi:id="_1igZZK4jEeeb3J7owtunSg" label="1" max="1" min="1"/>
+      <outParameters xmi:id="_1igZZa4jEeeb3J7owtunSg">
+        <modelElement href="HW06.uml#_vCSDA64iEeeb3J7owtunSg"/>
+        <type xmi:id="_1igZZq4jEeeb3J7owtunSg" name="PlayMusicVisitor">
+          <modelElement href="HW06.uml#_vCQ04K4iEeeb3J7owtunSg"/>
+        </type>
+      </outParameters>
+    </operations>
+  </nodes>
+  <nodes xsi:type="com.yattasolutions.uml.diagrams.classifier:ClassifierVisual" xmi:id="_1irYcK4jEeeb3J7owtunSg" comments="_1ilR0K4jEeeb3J7owtunSg" targetConnectionVisual="_1iqKUK4jEeeb3J7owtunSg" name="ToStringVisitor">
+    <modelElement href="HW06.uml#_vCT4MK4iEeeb3J7owtunSg"/>
+    <visualProperties xmi:id="_1irYca4jEeeb3J7owtunSg" position="10.0,172.0" size="-1.0,-1.0"/>
+    <visibility xmi:id="_1irYcq4jEeeb3J7owtunSg" label="+"/>
+    <operations xmi:id="_1irYc64jEeeb3J7owtunSg" name="ToStringVisitor">
+      <modelElement href="HW06.uml#_vCVtYK4iEeeb3J7owtunSg"/>
+      <keywords xmi:id="_1irYdK4jEeeb3J7owtunSg" keyword="create"/>
+      <visibility xmi:id="_1irYda4jEeeb3J7owtunSg" label="+"/>
+      <cardinality xmi:id="_1irYdq4jEeeb3J7owtunSg" label="1" max="1" min="1"/>
+      <outParameters xmi:id="_1irYd64jEeeb3J7owtunSg">
+        <modelElement href="HW06.uml#_vCWUcq4iEeeb3J7owtunSg"/>
+        <type xmi:id="_1irYeK4jEeeb3J7owtunSg" name="ToStringVisitor">
+          <modelElement href="HW06.uml#_vCT4MK4iEeeb3J7owtunSg"/>
+        </type>
+      </outParameters>
+    </operations>
+  </nodes>
+</com.yattasolutions.uml.diagrams.classifier:ClassDiagram>

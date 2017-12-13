@@ -1,0 +1,98 @@
+package model.balls;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Point;
+import java.util.Observable;
+
+import util.Randomizer;
+
+/**
+ * Following is a class defining what a ASeparating ball is
+ * 
+ * @author wq3
+ * @author ker7
+ */
+public class ASeparatingBall extends ABall {
+
+	/**
+	 *  Dispatcher object initially set to null to be used in the generation of other balls
+	 **/
+	private static Observable dispatcher = null;
+
+	/**
+	 *  Set the time slice of adding another ball
+	 **/
+	private static final int time_slice = 50;
+
+	// Rena7ssance: fix the zero velocity problem maybe 
+	private static final int velocity_min_x = -30;
+	private static final int velocity_max_x = 30;
+	private static final int velocity_min_y = -30;
+	private static final int velocity_max_y = 30;
+
+	/**
+	 *  count field
+	 **/
+	private int time_count = 0;
+
+	/**
+	 * Constructor of ASeparatingBall
+	 * 
+	 * @param startLoc The beginning location of the ball, generated randomly based on the canvas's size
+	 * @param startRadius The beginning radius of the ball, generated randomly from 10 to 20 pixels
+	 * @param startVel The beginning velocity of the ball, generated randomly from a rectangle (0,0,10,25)
+	 * @param startColor The beginning color of the ball, generated randomly
+	 * @param theCanvas The canvas that the ball (and all other balls) is being drawn on
+	 */
+	public ASeparatingBall(Point startLoc, int startRadius, Point startVel, Color startColor, Component theCanvas) {
+		super(startLoc, startRadius, startVel, startColor, theCanvas);
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * Variant part of ASeparatingBall 
+	 */
+	@Override
+	public void variant() {
+		// Check the TIME_COUNT and time_slice to decide whether to separate
+		if (time_count < time_slice) {
+			return;
+		}
+
+		// Create a new ASeparatingBall
+		try {
+			Object[] args = new Object[] { new Point(this.location.x, this.location.y),
+					Randomizer.singleton.randomInt(10, 20),
+					new Point(Randomizer.singleton.randomInt(velocity_min_x, velocity_max_x),
+							Randomizer.singleton.randomInt(velocity_min_y, velocity_max_y)),
+					Randomizer.singleton.randomColor(), this.canvas };
+			java.lang.reflect.Constructor<?> cs[] = Class.forName(this.getClass().getName()).getConstructors();
+			java.lang.reflect.Constructor<?> c = null;
+			for (int i = 0; i < cs.length; i++) {
+				if (args.length == (cs[i]).getParameterTypes().length) {
+					c = cs[i];
+					break;
+				}
+			}
+			dispatcher.addObserver((ABall) c.newInstance(args));
+		} catch (Exception ex) {
+			System.err.println("Class  failed to load. \nException = \n" + ex);
+			ex.printStackTrace();
+		}
+		time_count = 0;
+	}
+
+	/**
+	 * Update method to animate the new balls being split off
+	 * Instead of the base update, this updates the timer counter, sets the dispatcher to the new one, and then updates.
+	 */
+	@Override
+	public void update(Observable o, Object g) {
+		time_count++;
+		dispatcher = o;
+		super.update(o, g);
+
+	}
+
+}

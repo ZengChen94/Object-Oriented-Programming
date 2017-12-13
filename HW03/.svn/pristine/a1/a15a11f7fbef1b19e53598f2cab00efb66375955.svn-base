@@ -1,0 +1,43 @@
+package model.balls;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Point;
+import util.SineMaker;
+
+/**
+ * Following is a class defining what a spin ball is
+ * 
+ * @author wq3
+ * @author ker7
+ */
+public class ASpinBall extends ABall {
+	/**
+	 * spin range
+	 **/
+	private SineMaker sin_val = new SineMaker(-25, 25, 25);
+
+	/**
+	 * The constructor for the Spinning (helix) ball
+	 * 
+	 * @param startLoc The beginning location of the ball, generated randomly based on the canvas's size
+	 * @param startRadius The beginning radius of the ball, generated randomly from 10 to 20 pixels
+	 * @param startVel The beginning velocity of the ball, generated randomly from a rectangle (0,0,10,25)
+	 * @param startColor The beginning color of the ball, generated randomly
+	 * @param theCanvas The canvas that the ball (and all other balls) is being drawn on
+	 */
+	public ASpinBall(Point startLoc, int startRadius, Point startVel, Color startColor, Component theCanvas) {
+		super(startLoc, startRadius, startVel, startColor, theCanvas);
+	}
+
+	/**
+	 * Variant part of the Spinning ball uses sinusoidal waves to cause the ball to spin
+	 */
+	@Override
+	public void variant() {
+		speed.x = sin_val.getIntVal();
+		speed.y = sin_val.getIntVal();
+
+	}
+
+}

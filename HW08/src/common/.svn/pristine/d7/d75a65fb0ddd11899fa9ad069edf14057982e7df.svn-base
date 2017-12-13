@@ -1,0 +1,17 @@
+package common;
+
+import java.awt.Component;
+
+/**
+ * A factory for creating desired GUI component.
+ *
+ */
+public interface IComponentFactory {
+	
+	/**
+	 * Make a desired GUI component
+	 * @return a component
+	 */
+	public Component make();
+
+}

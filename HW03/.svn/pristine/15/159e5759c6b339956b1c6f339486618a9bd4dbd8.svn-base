@@ -1,0 +1,21 @@
+package model.strategy;
+
+import model.Ball;
+import util.Randomizer;
+
+public class BreathingStrategy implements IUpdateStrategy {
+	private final int total = 20;
+	private int cnt = total;
+
+	/**
+	 * Random change the radius of the ball.
+	 */
+	@Override
+	public void updateState(Ball ball) {
+		cnt--;
+		if (cnt == 0) {
+			ball.setRadius(Randomizer.singleton.randomInt(10, 30));
+			cnt = total;
+		}
+	}
+}
