@@ -1,0 +1,27 @@
+package common.datatype;
+
+import java.io.Serializable;
+
+import common.ICmd2ModelAdapter;
+import provided.datapacket.ADataPacketAlgoCmd;
+import provided.datapacket.DataPacket;
+
+/**
+ * Common data type for transmitting command between remote peers.
+ * Typically, when a recipient receives such a message, the recipient installs the command into the visitor.
+ * (Of course you can reject it if you don't want to install it into your system)
+ * @param <T> the command type
+ */
+public interface IInstallCmdType<T extends ADataPacketAlgoCmd<String, ?, String, ? extends ICmd2ModelAdapter<?>, ? extends DataPacket<?, ?>>> extends Serializable {
+	/**
+	 *  Get the command
+	 * @return the command
+	 */
+	public T getCmd();
+	
+	/**
+	 * Get the command id
+	 * @return the command id
+	 */
+	public Class<?> getCmdId();
+}

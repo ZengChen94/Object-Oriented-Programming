@@ -1,0 +1,12 @@
+package common.datatype.user;
+
+import common.DataPacketUserAlgoCmd;
+import common.datatype.IInstallCmdType;
+
+/**
+ * Common data type for transmitting command between users.
+ * Specify the command type to be DataPacketCRAlgoCmd
+ */
+public interface IUserInstallCmdType extends IInstallCmdType<DataPacketUserAlgoCmd<?>> {
+
+}

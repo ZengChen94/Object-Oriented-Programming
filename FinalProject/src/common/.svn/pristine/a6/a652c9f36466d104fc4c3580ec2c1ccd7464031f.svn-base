@@ -1,0 +1,13 @@
+package common.datatype.chatroom;
+
+import common.DataPacketCR;
+import common.datatype.IFailureStatusType;
+
+/**
+ * ICRRejectionStatusType is a sub interface of IFailureStatusType,
+ * defines a concrete failure status due to rejection.
+ * Specify the data packet type to be DataPacketCR.
+ */
+public interface ICRRejectionStatusType extends IFailureStatusType<DataPacketCR<?>> {
+
+}
